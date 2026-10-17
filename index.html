@@ -106,8 +106,9 @@
 const REPO = 'kebby14-yphs/kebbi-site';
 const STATUS_TEXT = { done: '完成', doing: '進行中', blocked: '卡住', todo: '待辦' };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-// no-store so freshly pushed data shows up without a hard refresh
-const getJSON = path => fetch(path, { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(path + ' ' + r.status); return r.json(); });
+// GitHub Pages' CDN caches files for up to 10 minutes; a unique query string skips it so pushed data shows up right away
+const fresh = path => path + '?t=' + Date.now();
+const getJSON = path => fetch(fresh(path), { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(path + ' ' + r.status); return r.json(); });
 
 function showTab(name) {
   document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
@@ -159,7 +160,7 @@ async function openNote(file) {
   const el = document.getElementById('note');
   el.hidden = false;
   el.textContent = '載入中…';
-  const md = await fetch('notes/' + file, { cache: 'no-store' }).then(r => r.text());
+  const md = await fetch(fresh('notes/' + file), { cache: 'no-store' }).then(r => r.text());
   el.innerHTML = DOMPurify.sanitize(marked.parse(md));
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
