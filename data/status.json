@@ -1,0 +1,52 @@
+{
+  "updated": "2026-10-17",
+  "robot": {
+    "model": "NUWA Kebbi Air (AIR-H201)",
+    "os": "Android 9",
+    "screen": "1024x600",
+    "connection": "USB (adb)"
+  },
+  "goals": [
+    {
+      "id": "mirror",
+      "title": "電腦即時看凱比畫面",
+      "status": "done",
+      "detail": "scrcpy v5.0.1（免安裝版）。Android 9 只能傳畫面，不能傳聲音。"
+    },
+    {
+      "id": "files",
+      "title": "電腦與凱比互傳檔案",
+      "status": "done",
+      "detail": "拖曳檔案到 .bat 就能上傳；中文檔名需指定遠端完整檔名（adb 在 Windows 的限制）。"
+    },
+    {
+      "id": "apk",
+      "title": "安裝 App（APK）到凱比",
+      "status": "done",
+      "detail": "安裝工具完成；把 APK 拖到「安裝APK.bat」即可。"
+    },
+    {
+      "id": "say",
+      "title": "讓凱比顯示並說任何話（USB，不經雲端）",
+      "status": "done",
+      "detail": "Windows 語音合成 → 電腦網頁伺服器 → adb reverse → 凱比瀏覽器顯示並播放。聲音是 Windows 的 Hanhan，不是凱比本身的聲音。"
+    },
+    {
+      "id": "app",
+      "title": "用 NUWA SDK 寫真正的凱比 App",
+      "status": "blocked",
+      "detail": "開發工具與測試 App 已建好；NuwaSDK .aar 的兩個官方下載點從學校網路都連不上。下一步：換網路下載，或寄信問 NUWA。"
+    },
+    {
+      "id": "codelab",
+      "title": "NUWA 網站 CodeLab 寫程式傳到凱比",
+      "status": "todo",
+      "detail": "凱比尚未綁定 NUWA 帳號（設定 > 帳號資訊 顯示「未知」），CodeLab 的「我的機器人」需要綁定。"
+    }
+  ],
+  "next": [
+    "換網路（例如手機熱點）下載 NuwaSDK，放進 KebbiHello/app/libs",
+    "接上凱比，安裝測試 App（app-debug.apk），確認建置流程",
+    "改用 NuwaRobotAPI.startTTS() 讓凱比用自己的聲音說話，再加入動作與表情"
+  ]
+}

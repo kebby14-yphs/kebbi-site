@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>凱比開發進度</title>
+<meta name="description" content="NUWA 凱比機器人 USB 開發進度、版本紀錄與分析筆記，由 Claude 與 Manus 共同更新。">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #e3e6ec;
+    --accent: #0f9d8f; --done: #1f9d55; --blocked: #c2410c; --todo: #6b7280; --doing: #2563eb;
+    --code: #f0f2f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11151c; --card: #19202a; --text: #e6e9ef; --muted: #9aa3b2; --line: #2a3340;
+      --accent: #2dd4bf; --done: #4ade80; --blocked: #fb923c; --todo: #9ca3af; --doing: #60a5fa;
+      --code: #222b37;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #11151c; --card: #19202a; --text: #e6e9ef; --muted: #9aa3b2; --line: #2a3340;
+    --accent: #2dd4bf; --done: #4ade80; --blocked: #fb923c; --todo: #9ca3af; --doing: #60a5fa;
+    --code: #222b37;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  header h1 { margin: 0 0 4px; font-size: 28px; }
+  header p { margin: 0; color: var(--muted); }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; font-size: 13px; color: var(--muted); }
+  nav { display: flex; gap: 4px; margin: 28px 0 16px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  nav button { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted);
+               padding: 8px 14px; font: inherit; cursor: pointer; white-space: nowrap; }
+  nav button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+  section[hidden] { display: none; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
+  .goal { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; }
+  .goal h3 { margin: 0; font-size: 16px; }
+  .goal p { grid-column: 2; margin: 0; color: var(--muted); font-size: 14px; }
+  .badge { font-size: 12px; font-weight: 600; border-radius: 6px; padding: 2px 8px; color: #fff; white-space: nowrap; }
+  .badge.done { background: var(--done); } .badge.blocked { background: var(--blocked); }
+  .badge.todo { background: var(--todo); } .badge.doing { background: var(--doing); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge { color: #11151c; } }
+  :root[data-theme="dark"] .badge { color: #11151c; }
+  h2 { font-size: 18px; margin: 24px 0 10px; }
+  ol.next { margin: 0; padding-left: 20px; }
+  .ver { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+  .ver strong { font-size: 16px; }
+  .ver .v { font-family: ui-monospace, Consolas, monospace; color: var(--accent); font-weight: 700; }
+  .ver small { color: var(--muted); }
+  .card ul { margin: 8px 0 0; padding-left: 20px; }
+  .commit { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .commit:last-child { border-bottom: 0; }
+  .commit code { color: var(--accent); }
+  .commit time { color: var(--muted); white-space: nowrap; }
+  .notes-list a { display: block; padding: 8px 0; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .notes-list a:hover { color: var(--accent); }
+  .notes-list small { color: var(--muted); margin-left: 8px; }
+  article { overflow-wrap: anywhere; }
+  article table { border-collapse: collapse; width: 100%; font-size: 14px; display: block; overflow-x: auto; }
+  article th, article td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+  article code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  article pre { background: var(--code); padding: 12px; border-radius: 8px; overflow-x: auto; }
+  article pre code { background: none; padding: 0; }
+  a { color: var(--accent); }
+  .muted { color: var(--muted); font-size: 14px; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 560px) { .commit { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>凱比開發進度</h1>
+    <p>NUWA 凱比機器人 USB 開發：進度、版本紀錄與分析筆記</p>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" data-tab="status" aria-selected="true">目前進度</button>
+    <button role="tab" data-tab="versions" aria-selected="false">版本紀錄</button>
+    <button role="tab" data-tab="notes" aria-selected="false">分析筆記</button>
+    <button role="tab" data-tab="commits" aria-selected="false">更新紀錄</button>
+  </nav>
+
+  <section id="status"></section>
+  <section id="versions" hidden></section>
+  <section id="notes" hidden>
+    <div class="card notes-list" id="notes-list"></div>
+    <article class="card" id="note" hidden></article>
+  </section>
+  <section id="commits" hidden>
+    <p class="muted">每一次修改網站資料都會留下一筆紀錄（來自 GitHub）。</p>
+    <div class="card" id="commit-list">載入中…</div>
+  </section>
+
+  <footer>由 Claude 與 Manus 共同維護。更新方式見 <a href="https://github.com/kebby14-yphs/kebbi-site/blob/main/AGENTS.md">AGENTS.md</a>。</footer>
+</div>
+
+<script>
+const REPO = 'kebby14-yphs/kebbi-site';
+const STATUS_TEXT = { done: '完成', doing: '進行中', blocked: '卡住', todo: '待辦' };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// no-store so freshly pushed data shows up without a hard refresh
+const getJSON = path => fetch(path, { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(path + ' ' + r.status); return r.json(); });
+
+function showTab(name) {
+  document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  document.querySelectorAll('main section, .wrap > section').forEach(s => { s.hidden = s.id !== name; });
+  try { localStorage.setItem('kebbi-tab', name); } catch (e) {}
+  if (name === 'commits') loadCommits();
+}
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => {
+  showTab(b.dataset.tab);
+  history.replaceState(null, '', '#' + b.dataset.tab);
+}));
+
+async function loadStatus() {
+  const s = await getJSON('data/status.json');
+  const r = s.robot || {};
+  document.getElementById('meta').innerHTML =
+    [r.model, r.os, r.connection, '最後更新 ' + s.updated].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('');
+  const goals = (s.goals || []).map(g => `
+    <div class="card goal">
+      <span class="badge ${esc(g.status)}">${esc(STATUS_TEXT[g.status] || g.status)}</span>
+      <h3>${esc(g.title)}</h3>
+      <p>${esc(g.detail)}</p>
+    </div>`).join('');
+  const next = (s.next || []).map(n => `<li>${esc(n)}</li>`).join('');
+  document.getElementById('status').innerHTML = goals + (next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : '');
+}
+
+async function loadVersions() {
+  const list = await getJSON('data/versions.json');
+  document.getElementById('versions').innerHTML = list.map(v => `
+    <div class="card">
+      <div class="ver"><span class="v">v${esc(v.version)}</span><strong>${esc(v.title)}</strong><small>${esc(v.date)} · ${esc(v.author)}</small></div>
+      <ul>${(v.changes || []).map(c => `<li>${esc(c)}</li>`).join('')}</ul>
+    </div>`).join('');
+}
+
+async function loadNotes() {
+  const list = await getJSON('notes/index.json');
+  document.getElementById('notes-list').innerHTML = list.map(n =>
+    `<a href="#note=${encodeURIComponent(n.file)}" data-file="${esc(n.file)}">${esc(n.title)}<small>${esc(n.date)} · ${esc(n.author)}</small></a>`).join('');
+  document.querySelectorAll('#notes-list a').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); openNote(a.dataset.file); history.replaceState(null, '', '#note=' + encodeURIComponent(a.dataset.file));
+  }));
+}
+
+async function openNote(file) {
+  if (!/^[\w.-]+\.md$/.test(file)) return;
+  showTab('notes');
+  const el = document.getElementById('note');
+  el.hidden = false;
+  el.textContent = '載入中…';
+  const md = await fetch('notes/' + file, { cache: 'no-store' }).then(r => r.text());
+  el.innerHTML = DOMPurify.sanitize(marked.parse(md));
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+let commitsLoaded = false;
+async function loadCommits() {
+  if (commitsLoaded) return;
+  commitsLoaded = true;
+  const box = document.getElementById('commit-list');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=30`);
+    if (!res.ok) throw new Error(res.status);
+    const commits = await res.json();
+    box.innerHTML = commits.map(c => {
+      const d = new Date(c.commit.author.date);
+      return `<div class="commit">
+        <a href="${esc(c.html_url)}"><code>${esc(c.sha.slice(0, 7))}</code></a>
+        <span>${esc(c.commit.message.split('\n')[0])}</span>
+        <time datetime="${esc(c.commit.author.date)}">${d.toLocaleString('zh-TW', { dateStyle: 'short', timeStyle: 'short' })}</time>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    commitsLoaded = false;
+    box.innerHTML = `無法載入 GitHub 紀錄（${esc(e.message)}）。可直接到 <a href="https://github.com/${REPO}/commits/main">GitHub</a> 查看。`;
+  }
+}
+
+(async () => {
+  try { await Promise.all([loadStatus(), loadVersions(), loadNotes()]); }
+  catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith('note=')) openNote(h.slice(5));
+  else if (['status', 'versions', 'notes', 'commits'].includes(h)) showTab(h);
+  else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
+})();
+</script>
+</body>
+</html>

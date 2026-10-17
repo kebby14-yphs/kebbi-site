@@ -1,0 +1,44 @@
+[
+  {
+    "version": "0.4",
+    "date": "2026-10-17",
+    "author": "Claude",
+    "title": "建立進度網站與 GitHub 儲存庫",
+    "changes": [
+      "程式與工具上傳到私人儲存庫 kebbi-dev",
+      "建立這個公開進度網站 kebbi-site，供 Claude 與 Manus 共同更新"
+    ]
+  },
+  {
+    "version": "0.3",
+    "date": "2026-10-17",
+    "author": "Claude",
+    "title": "Android 開發環境與測試 App",
+    "changes": [
+      "安裝 JDK 17、Android SDK（android-28、build-tools 30.0.3）、Gradle 7.6.4，皆比對官方校驗碼",
+      "測試 App KebbiHello 建置成功：顯示「你好」並播放內附語音（尚未使用 NuwaSDK）",
+      "NuwaSDK 官方下載點連不上，暫停在這一步"
+    ]
+  },
+  {
+    "version": "0.2",
+    "date": "2026-10-16",
+    "author": "Claude",
+    "title": "讓凱比顯示並說任何話",
+    "changes": [
+      "「凱比說話」視窗：輸入文字，凱比螢幕顯示並唸出來",
+      "凱比媒體音量從 1/15 調到 10/15",
+      "發現凱比沒有標準 Android 語音引擎，說話要透過 NUWA 自己的語音服務（需 SDK）"
+    ]
+  },
+  {
+    "version": "0.1",
+    "date": "2026-10-16",
+    "author": "Claude",
+    "title": "USB 連線基本工具",
+    "changes": [
+      "scrcpy 即時看凱比畫面",
+      "電腦與凱比互傳檔案、安裝 APK 的拖放工具"
+    ]
+  }
+]
