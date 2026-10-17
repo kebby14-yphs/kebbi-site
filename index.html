@@ -58,6 +58,12 @@
   .commit:last-child { border-bottom: 0; }
   .commit code { color: var(--accent); }
   .commit time { color: var(--muted); white-space: nowrap; }
+  .file { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; align-items: baseline; }
+  .file:last-child { border-bottom: 0; }
+  .file a { overflow-wrap: anywhere; }
+  .file .size { text-align: right; white-space: nowrap; }
+  h2 small { font-weight: 400; }
+  @media (max-width: 560px) { .file { grid-template-columns: 1fr auto; } .file .size { grid-column: 2; } }
   .notes-list a { display: block; padding: 8px 0; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); }
   .notes-list a:hover { color: var(--accent); }
   .notes-list small { color: var(--muted); margin-left: 8px; }
@@ -85,6 +91,7 @@
     <button role="tab" data-tab="status" aria-selected="true">目前進度</button>
     <button role="tab" data-tab="versions" aria-selected="false">版本紀錄</button>
     <button role="tab" data-tab="notes" aria-selected="false">分析筆記</button>
+    <button role="tab" data-tab="files" aria-selected="false">原始檔</button>
     <button role="tab" data-tab="commits" aria-selected="false">更新紀錄</button>
   </nav>
 
@@ -93,6 +100,10 @@
   <section id="notes" hidden>
     <div class="card notes-list" id="notes-list"></div>
     <article class="card" id="note" hidden></article>
+  </section>
+  <section id="files" hidden>
+    <p class="muted">🔒 原始檔放在私人儲存庫，需要用專案的 GitHub 帳號登入才能開啟與下載。下載後用 NUWA 對應的工具匯入。</p>
+    <div id="file-groups"></div>
   </section>
   <section id="commits" hidden>
     <p class="muted">每一次修改網站資料都會留下一筆紀錄（來自 GitHub）。</p>
@@ -165,6 +176,20 @@ async function openNote(file) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+const PRIVATE_REPO = 'kebby14-yphs/kebbi-dev';
+async function loadFiles() {
+  const groups = await getJSON('data/files.json');
+  const link = p => `https://github.com/${PRIVATE_REPO}/blob/main/` + p.split('/').map(encodeURIComponent).join('/');
+  document.getElementById('file-groups').innerHTML = groups.map(g => `
+    <h2>${esc(g.title)} <small class="muted">${g.files.length} 個檔案</small></h2>
+    <div class="card">${g.files.map(f => `
+      <div class="file">
+        <a href="${esc(link(f.path))}" target="_blank" rel="noopener">${esc(f.name)}</a>
+        <span class="muted">${esc(f.tool || '')}</span>
+        <span class="muted size">${Number(f.kb).toLocaleString()} KB</span>
+      </div>`).join('')}</div>`).join('');
+}
+
 let commitsLoaded = false;
 async function loadCommits() {
   if (commitsLoaded) return;
@@ -189,11 +214,11 @@ async function loadCommits() {
 }
 
 (async () => {
-  try { await Promise.all([loadStatus(), loadVersions(), loadNotes()]); }
+  try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
   catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
-  else if (['status', 'versions', 'notes', 'commits'].includes(h)) showTab(h);
+  else if (['status', 'versions', 'notes', 'files', 'commits'].includes(h)) showTab(h);
   else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
 })();
 </script>

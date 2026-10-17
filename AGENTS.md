@@ -16,6 +16,7 @@
 | 更新「下一步」清單 | `data/status.json` 的 `next` |
 | 記錄一個新版本 | 在 `data/versions.json` **最前面**加一筆 |
 | 新增分析筆記 | 在 `notes/` 加 `YYYY-MM-DD-主題.md`，並在 `notes/index.json` **最前面**加一筆 |
+| 原始檔清單 | `data/files.json`：只放檔名與私人儲存庫 `kebbi-dev` 裡的路徑，**檔案本身放 kebbi-dev，不要放進這個公開儲存庫** |
 
 ### `status` 只能用這四個值
 
