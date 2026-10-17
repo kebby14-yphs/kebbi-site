@@ -16,6 +16,7 @@
 | 更新「下一步」清單 | `data/status.json` 的 `next` |
 | 記錄一個新版本 | 在 `data/versions.json` **最前面**加一筆 |
 | 新增分析筆記 | 在 `notes/` 加 `YYYY-MM-DD-主題.md`，並在 `notes/index.json` **最前面**加一筆 |
+| 新增 / 修改比賽 | `competitions/YYYY-MM-DD-代號.json`，一場比賽一個檔（格式見下方）。老師也可以在網站「比賽專區」按「＋ 新增比賽」 |
 | 原始檔清單 | `data/files.json`：只放檔名與私人儲存庫 `kebbi-dev` 裡的路徑，**檔案本身放 kebbi-dev，不要放進這個公開儲存庫** |
 
 ### `status` 只能用這四個值
@@ -36,6 +37,29 @@
 
 - `author` 寫 `Claude`、`Manus` 或老師的名字
 - 版本號：小改 +0.1；完成一個大目標（例如 SDK App 第一次成功說話）升到下一個整數
+
+### 比賽格式
+
+```json
+{
+  "name": "比賽名稱",
+  "date": "2026-11-20",
+  "organizer": "主辦單位",
+  "location": "地點",
+  "team": "隊伍 / 作品名稱",
+  "status": "planning",
+  "result": "成績（還沒比賽就留空）",
+  "summary": "一句話摘要",
+  "description": "詳細說明，可用 Markdown",
+  "files_folders": ["卑南0930"],
+  "links": [{ "title": "比賽簡章", "url": "https://..." }]
+}
+```
+
+- `status`：`planning`（準備中）、`registered`（已報名）、`ongoing`（比賽中）、`done`（已結束）
+- `files_folders`：對應 `data/files.json` 裡的 `folder`，網站會在比賽頁列出那些原始檔
+- 不知道的欄位寫 `待補` 或留空，**不要猜**
+- 檔名只能用英數字、`-`、`_`、`.`
 
 ### 筆記檔名
 

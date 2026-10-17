@@ -58,6 +58,25 @@
   .commit:last-child { border-bottom: 0; }
   .commit code { color: var(--accent); }
   .commit time { color: var(--muted); white-space: nowrap; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .toolbar p { margin: 0; }
+  .btn { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 8px 16px; font: inherit; cursor: pointer; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #11151c; } }
+  :root[data-theme="dark"] .btn { color: #11151c; }
+  .btn.ghost { background: none; color: var(--text); border: 1px solid var(--line); }
+  form h3 { margin: 0 0 4px; }
+  form label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--muted); margin-top: 10px; }
+  form input, form select, form textarea { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 16px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+  .contest { cursor: pointer; display: block; color: inherit; text-decoration: none; }
+  .contest:hover { border-color: var(--accent); }
+  .contest h3 { margin: 6px 0 2px; font-size: 17px; }
+  .contest .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--muted); }
+  .contest p { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+  .badge.planning { background: var(--todo); } .badge.registered, .badge.ongoing { background: var(--doing); }
+  dl.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 12px 0; font-size: 14px; }
+  dl.facts dt { color: var(--muted); } dl.facts dd { margin: 0; }
   .file { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; align-items: baseline; }
   .file:last-child { border-bottom: 0; }
   .file a { overflow-wrap: anywhere; }
@@ -89,6 +108,7 @@
 
   <nav role="tablist">
     <button role="tab" data-tab="status" aria-selected="true">目前進度</button>
+    <button role="tab" data-tab="contests" aria-selected="false">比賽專區</button>
     <button role="tab" data-tab="versions" aria-selected="false">版本紀錄</button>
     <button role="tab" data-tab="notes" aria-selected="false">分析筆記</button>
     <button role="tab" data-tab="files" aria-selected="false">原始檔</button>
@@ -96,6 +116,44 @@
   </nav>
 
   <section id="status"></section>
+  <section id="contests" hidden>
+    <div class="toolbar">
+      <p class="muted">每場比賽一張卡片，點開看詳細內容與相關原始檔。</p>
+      <button type="button" class="btn" id="add-contest-btn">＋ 新增比賽</button>
+    </div>
+    <form class="card" id="contest-form" hidden>
+      <h3>新增比賽</h3>
+      <p class="muted">填好後按「送到 GitHub」，會開啟 GitHub 新增檔案頁面（內容已填好），用專案帳號登入後按 <b>Commit changes</b> 就完成。約 1 分鐘後這裡就看得到。</p>
+      <div class="grid">
+        <label>比賽名稱 *<input name="name" required></label>
+        <label>日期 *<input name="date" type="date" required></label>
+        <label>主辦單位<input name="organizer"></label>
+        <label>地點<input name="location"></label>
+        <label>隊伍 / 作品名稱<input name="team"></label>
+        <label>狀態
+          <select name="status">
+            <option value="planning">準備中</option>
+            <option value="registered">已報名</option>
+            <option value="ongoing">比賽中</option>
+            <option value="done">已結束</option>
+          </select>
+        </label>
+        <label>成績<input name="result" placeholder="例如：決賽入圍、佳作"></label>
+        <label>相關原始檔資料夾<select name="files_folders" multiple size="3" id="contest-folders"></select></label>
+      </div>
+      <label>一句話摘要<input name="summary"></label>
+      <label>詳細說明（可用 Markdown）<textarea name="description" rows="6" placeholder="使用的工具、分工、評審意見、賽後檢討…"></textarea></label>
+      <label>相關連結（一行一個：標題 | 網址）<textarea name="links" rows="3" placeholder="比賽簡章 | https://..."></textarea></label>
+      <div class="actions">
+        <button type="submit" class="btn">送到 GitHub</button>
+        <button type="button" class="btn ghost" id="copy-contest-btn">複製 JSON</button>
+        <button type="button" class="btn ghost" id="cancel-contest-btn">取消</button>
+        <span class="muted" id="contest-form-msg"></span>
+      </div>
+    </form>
+    <div id="contest-list"></div>
+    <article class="card" id="contest-detail" hidden></article>
+  </section>
   <section id="versions" hidden></section>
   <section id="notes" hidden>
     <div class="card notes-list" id="notes-list"></div>
@@ -177,9 +235,13 @@ async function openNote(file) {
 }
 
 const PRIVATE_REPO = 'kebby14-yphs/kebbi-dev';
+let fileGroups = [];
+const privateLink = p => `https://github.com/${PRIVATE_REPO}/blob/main/` + p.split('/').map(encodeURIComponent).join('/');
 async function loadFiles() {
-  const groups = await getJSON('data/files.json');
-  const link = p => `https://github.com/${PRIVATE_REPO}/blob/main/` + p.split('/').map(encodeURIComponent).join('/');
+  const groups = fileGroups = await getJSON('data/files.json');
+  const link = privateLink;
+  const folderSelect = document.getElementById('contest-folders');
+  folderSelect.innerHTML = groups.map(g => `<option value="${esc(g.folder)}">${esc(g.title)}</option>`).join('');
   document.getElementById('file-groups').innerHTML = groups.map(g => `
     <h2>${esc(g.title)} <small class="muted">${g.files.length} 個檔案</small></h2>
     <div class="card">${g.files.map(f => `
@@ -189,6 +251,89 @@ async function loadFiles() {
         <span class="muted size">${Number(f.kb).toLocaleString()} KB</span>
       </div>`).join('')}</div>`).join('');
 }
+
+// ---- 比賽專區：每場比賽一個 competitions/*.json ----
+const CONTEST_STATUS = { planning: '準備中', registered: '已報名', ongoing: '比賽中', done: '已結束' };
+let contests = [];
+
+async function loadContests() {
+  const box = document.getElementById('contest-list');
+  try {
+    // List the folder through the API so a just-committed file shows up before Pages finishes rebuilding
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/competitions?ref=main&t=${Date.now()}`);
+    if (!res.ok) throw new Error('GitHub ' + res.status);
+    const entries = (await res.json()).filter(e => e.type === 'file' && /^[\w.-]+\.json$/.test(e.name));
+    contests = (await Promise.all(entries.map(async e => {
+      try { const c = await fetch(e.download_url + '?t=' + Date.now()).then(r => r.json()); c._file = e.name; return c; }
+      catch (err) { return { name: e.name + '（格式錯誤）', date: '', _file: e.name, _broken: true }; }
+    }))).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  } catch (e) {
+    box.innerHTML = `<div class="card">無法載入比賽清單（${esc(e.message)}）。可到 <a href="https://github.com/${REPO}/tree/main/competitions">GitHub</a> 查看。</div>`;
+    return;
+  }
+  box.innerHTML = contests.length ? contests.map((c, i) => `
+    <a class="card contest" href="#contest=${encodeURIComponent(c._file)}" data-i="${i}">
+      <div class="row"><span class="badge ${esc(c.status)}">${esc(CONTEST_STATUS[c.status] || c.status || '未設定')}</span>${esc(c.date)}${c.result && c.result !== '待補' ? ' · ' + esc(c.result) : ''}</div>
+      <h3>${esc(c.name)}</h3>
+      ${c.summary ? `<p>${esc(c.summary)}</p>` : ''}
+    </a>`).join('') : '<div class="card muted">還沒有比賽，按「＋ 新增比賽」新增第一場。</div>';
+  box.querySelectorAll('.contest').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); openContest(a.dataset.i); history.replaceState(null, '', a.getAttribute('href'));
+  }));
+}
+
+function openContest(i) {
+  const c = contests[i];
+  if (!c) return;
+  showTab('contests');
+  const el = document.getElementById('contest-detail');
+  const fact = (label, v) => v ? `<dt>${label}</dt><dd>${esc(v)}</dd>` : '';
+  const folders = (c.files_folders || []).map(f => fileGroups.find(g => g.folder === f)).filter(Boolean);
+  const links = (c.links || []).filter(l => /^https?:\/\//.test(l.url));
+  el.innerHTML = `
+    <div class="contest row" style="cursor:auto"><span class="badge ${esc(c.status)}">${esc(CONTEST_STATUS[c.status] || c.status || '未設定')}</span></div>
+    <h2 style="margin-top:8px">${esc(c.name)}</h2>
+    <dl class="facts">${fact('日期', c.date)}${fact('主辦單位', c.organizer)}${fact('地點', c.location)}${fact('隊伍 / 作品', c.team)}${fact('成績', c.result)}</dl>
+    ${c.description ? DOMPurify.sanitize(marked.parse(c.description)) : ''}
+    ${links.length ? `<h3>相關連結</h3><ul>${links.map(l => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.title || l.url)}</a></li>`).join('')}</ul>` : ''}
+    ${folders.map(g => `<h3>🔒 ${esc(g.title)}</h3>${g.files.map(f => `<div class="file"><a href="${esc(privateLink(f.path))}" target="_blank" rel="noopener">${esc(f.name)}</a><span class="muted">${esc(f.tool || '')}</span><span class="muted size">${Number(f.kb).toLocaleString()} KB</span></div>`).join('')}`).join('')}
+    <p class="muted" style="margin-top:16px"><a href="https://github.com/${REPO}/edit/main/competitions/${encodeURIComponent(c._file)}" target="_blank" rel="noopener">在 GitHub 編輯這場比賽</a>（需登入專案帳號）</p>`;
+  el.hidden = false;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function contestFromForm() {
+  const f = new FormData(document.getElementById('contest-form'));
+  const v = k => String(f.get(k) || '').trim();
+  return {
+    name: v('name'), date: v('date'), organizer: v('organizer'), location: v('location'), team: v('team'),
+    status: v('status'), result: v('result'), summary: v('summary'), description: v('description'),
+    files_folders: f.getAll('files_folders'),
+    links: v('links').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+      const [title, url] = line.includes('|') ? line.split('|').map(s => s.trim()) : ['', line];
+      return { title, url };
+    })
+  };
+}
+
+const contestForm = document.getElementById('contest-form');
+const formMsg = document.getElementById('contest-form-msg');
+document.getElementById('add-contest-btn').addEventListener('click', () => { contestForm.hidden = false; contestForm.elements.namedItem('name').focus(); });
+document.getElementById('cancel-contest-btn').addEventListener('click', () => { contestForm.hidden = true; formMsg.textContent = ''; });
+document.getElementById('copy-contest-btn').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(JSON.stringify(contestFromForm(), null, 2)); formMsg.textContent = '已複製'; }
+  catch (e) { formMsg.textContent = '無法複製，請改用「送到 GitHub」'; }
+});
+contestForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const c = contestFromForm();
+  const json = JSON.stringify(c, null, 2) + '\n';
+  // Filenames must stay ASCII (the page rejects others): date + short random id
+  const file = `${c.date}-${Math.random().toString(36).slice(2, 7)}.json`;
+  const url = `https://github.com/${REPO}/new/main?filename=${encodeURIComponent('competitions/' + file)}&value=${encodeURIComponent(json)}`;
+  window.open(url, '_blank', 'noopener');
+  formMsg.textContent = '已開啟 GitHub，按 Commit changes 後約 1 分鐘重新整理這頁就看得到。';
+});
 
 let commitsLoaded = false;
 async function loadCommits() {
@@ -216,9 +361,11 @@ async function loadCommits() {
 (async () => {
   try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
   catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
+  await loadContests();
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
-  else if (['status', 'versions', 'notes', 'files', 'commits'].includes(h)) showTab(h);
+  else if (h.startsWith('contest=')) openContest(contests.findIndex(c => c._file === h.slice(8)));
+  else if (['status', 'contests', 'versions', 'notes', 'files', 'commits'].includes(h)) showTab(h);
   else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
 })();
 </script>
