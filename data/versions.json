@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.9",
+    "date": "2026-10-17",
+    "author": "Claude",
+    "title": "記錄雲端硬碟比賽素材",
+    "changes": [
+      "兩個 Google 雲端硬碟資料夾（競賽工讀資料、機智卑南隊素材）的內容清單記錄在私人儲存庫，連結不公開",
+      "素材含 6 段卑南語錄音（你好、再見、謝謝、inavayan i、ku ngadan、semangal），之後可用於語音偵錯 v4"
+    ]
+  },
+  {
     "version": "0.8",
     "date": "2026-10-17",
     "author": "Claude",
