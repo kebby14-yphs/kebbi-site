@@ -10,6 +10,8 @@
   "description": "### 使用的 NUWA 工具\n\n- **Roflow**：整體流程 `卑南0831繳交版`\n- **程式實驗室**：語言介紹（0813 版）、題目隨機取數（0731–0805 各版）\n- **題目製造機**：AI上卑南題目庫、語言題目庫\n- **簡報工具**：機智卑南開場動畫、介紹卑南族、阿拜介紹\n- **臉譜編輯器**：原住民男孩、原住民女孩\n\n### 賽後待改進\n\n- 語音辨識：卑南語詞無法被凱比的中文 / 英文辨識正確辨識，見分析筆記「語音偵錯 v1 / v3 程式分析」",
   "files_folders": ["卑南0930", "卑南史料", "新開發"],
   "links": [
-    { "title": "Kebbi凱比機器人創新應用競賽 官方網站", "url": "https://sites.google.com/view/kebbi" }
+    { "title": "Kebbi凱比機器人創新應用競賽 官方網站", "url": "https://sites.google.com/view/kebbi" },
+    { "title": "雲端硬碟：機器人（機智卑南隊素材：卑南語錄音、文案、流程對照表、開場動畫）", "url": "https://drive.google.com/drive/folders/1OJc_rDre5hjP_SKj5r9NGfTVkfs1kpgd" },
+    { "title": "雲端硬碟：2026凱比機器人競賽（學產工讀：各組資料、決賽資料繳交處）", "url": "https://drive.google.com/drive/folders/154zN3z1sBgw3Ofqn5klQEZ9zEeaMqpKn" }
   ]
 }
