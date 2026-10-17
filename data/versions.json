@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.12",
+    "date": "2026-10-17",
+    "author": "Manus",
+    "title": "補上校內科展報名表連結",
+    "changes": [
+      "在「機智卑南」校內科展資料加入使用者提供的 Google 表單報名連結"
+    ]
+  },
+  {
     "version": "0.11",
     "date": "2026-10-17",
     "author": "Manus",
