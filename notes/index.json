@@ -1,4 +1,5 @@
 [
+  { "file": "2026-10-17-voice-debug-v1-v3.md", "title": "語音偵錯 v1 / v3 程式分析", "date": "2026-10-17", "author": "Claude" },
   { "file": "2026-10-17-sdk-download.md", "title": "NuwaSDK 下載失敗分析", "date": "2026-10-17", "author": "Claude" },
   { "file": "2026-10-16-voice.md", "title": "凱比為什麼不能直接用 Android 語音", "date": "2026-10-16", "author": "Claude" }
 ]

@@ -1,4 +1,4 @@
-{
+﻿{
   "updated": "2026-10-17",
   "robot": {
     "model": "NUWA Kebbi Air (AIR-H201)",
@@ -42,6 +42,18 @@
       "title": "NUWA 網站 CodeLab 寫程式傳到凱比",
       "status": "todo",
       "detail": "凱比尚未綁定 NUWA 帳號（設定 > 帳號資訊 顯示「未知」），CodeLab 的「我的機器人」需要綁定。"
+    },
+    {
+      "id": "backup",
+      "title": "備份比賽資料（卑南族語言學習）",
+      "status": "done",
+      "detail": "歷史版本、比賽當天檔案、語音偵錯共 25 個檔案已備份到私人儲存庫。"
+    },
+    {
+      "id": "voice-debug",
+      "title": "語音辨識偵錯（Koding）",
+      "status": "todo",
+      "detail": "v1、v3 已分析出問題；v4 待做：加嘗試次數上限、接受多種辨識結果、修正提示句。"
     }
   ],
   "next": [
