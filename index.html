@@ -264,7 +264,12 @@ async function loadContests() {
     if (!res.ok) throw new Error('GitHub ' + res.status);
     const entries = (await res.json()).filter(e => e.type === 'file' && /^[\w.-]+\.json$/.test(e.name));
     contests = (await Promise.all(entries.map(async e => {
-      try { const c = await fetch(e.download_url + '?t=' + Date.now()).then(r => r.json()); c._file = e.name; return c; }
+      try {
+        // Prefer the Pages copy (honours cache-busting); fall back to raw.githubusercontent (~5 min cache) when Pages hasn't rebuilt yet
+        let r = await fetch(fresh('competitions/' + e.name), { cache: 'no-store' });
+        if (!r.ok) r = await fetch(e.download_url);
+        const c = await r.json(); c._file = e.name; return c;
+      }
       catch (err) { return { name: e.name + '（格式錯誤）', date: '', _file: e.name, _broken: true }; }
     }))).sort((a, b) => String(b.date).localeCompare(String(a.date)));
   } catch (e) {
