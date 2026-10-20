@@ -1,5 +1,23 @@
 [
     {
+        "folder":  "voice-debug-v4",
+        "title":  "語音偵錯 v4（10/20）",
+        "files":  [
+                      {
+                          "name":  "AI上卑南_語音偵錯_v4.koding",
+                          "path":  "voice-debug-v4/AI上卑南_語音偵錯_v4.koding",
+                          "tool":  "程式實驗室",
+                          "kb":  172
+                      },
+                      {
+                          "name":  "README.md（說明與手動拼法）",
+                          "path":  "voice-debug-v4/README.md",
+                          "tool":  "說明",
+                          "kb":  4
+                      }
+                  ]
+    },
+    {
         "folder":  "卑南0930",
         "title":  "比賽檔案（卑南0930 資料夾）",
         "files":  [
