@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.15",
+    "date": "2026-10-20",
+    "author": "Claude",
+    "title": "清理範本連結",
+    "changes": [
+      "科展作品說明書格式範本連結移除網址中的 Google 帳號編號（ouid），連結照常可開"
+    ]
+  },
+  {
     "version": "0.14",
     "date": "2026-10-20",
     "author": "Claude",
