@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-17",
+  "updated": "2026-10-20",
   "robot": {
     "model": "NUWA Kebbi Air (AIR-H201)",
     "os": "Android 9",
@@ -35,7 +35,7 @@
       "id": "app",
       "title": "用 NUWA SDK 寫真正的凱比 App",
       "status": "blocked",
-      "detail": "開發工具與測試 App 已建好；NuwaSDK .aar 的兩個官方下載點從學校網路都連不上。下一步：換網路下載，或寄信問 NUWA。"
+      "detail": "測試 App（不含 SDK）已在凱比上安裝並執行成功（10/20），整套建置流程確認可用。卡在 NuwaSDK .aar：兩個官方下載點 10/17、10/20 從學校網路都連不上。下一步：換網路下載，或寄信問 NUWA。"
     },
     {
       "id": "codelab",
@@ -58,7 +58,6 @@
   ],
   "next": [
     "換網路（例如手機熱點）下載 NuwaSDK，放進 KebbiHello/app/libs",
-    "接上凱比，安裝測試 App（app-debug.apk），確認建置流程",
     "改用 NuwaRobotAPI.startTTS() 讓凱比用自己的聲音說話，再加入動作與表情"
   ]
 }
