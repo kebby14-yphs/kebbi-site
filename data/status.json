@@ -34,8 +34,8 @@
     {
       "id": "app",
       "title": "用 NUWA SDK 寫真正的凱比 App",
-      "status": "blocked",
-      "detail": "測試 App（不含 SDK）已在凱比上安裝並執行成功（10/20），整套建置流程確認可用。卡在 NuwaSDK .aar：兩個官方下載點 10/17、10/20 從學校網路都連不上。下一步：換網路下載，或寄信問 NUWA。"
+      "status": "done",
+      "detail": "10/20 完成：讓凱比連手機熱點、用凱比內建 curl 從官方下載點取得 NuwaSDK；App 改用 startTTS()，凱比用自己的聲音說「你好，我是凱比」，系統紀錄確認說話成功。"
     },
     {
       "id": "codelab",
@@ -57,7 +57,9 @@
     }
   ],
   "next": [
-    "換網路（例如手機熱點）下載 NuwaSDK，放進 KebbiHello/app/libs",
-    "改用 NuwaRobotAPI.startTTS() 讓凱比用自己的聲音說話，再加入動作與表情"
+    "凱比綁定 NUWA 帳號（老師在凱比上登入），之後可用 CodeLab 傳程式",
+    "在 NUWA 匯入並測試語音偵錯 v4，用學生實測結果調整接受清單",
+    "SDK App 加入動作、表情與觸摸互動",
+    "11/13 前繳交科展第一階段作品說明書"
   ]
 }
