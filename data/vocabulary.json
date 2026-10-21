@@ -2,476 +2,753 @@
   "title": "卑南語生活詞彙",
   "edition": "2025年11月更新版",
   "source": "https://e-dictionary.ilrdf.org.tw/textDownload?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E",
+  "audioSource": {
+    "name": "原住民族語言線上辭典",
+    "dialect": "南王卑南語",
+    "url": "https://e-dictionary.ilrdf.org.tw/singleSearch?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E"
+  },
   "entries": [
     {
       "category": "問候、代名詞與問句",
       "word": "inabayan",
-      "meaning": "你好（問候語）"
+      "meaning": "你好（問候語）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/d59a0404-9de3-415c-9172-8accb958342a/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "sinabalran",
-      "meaning": "早安"
+      "meaning": "早安",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/12335e2e-509f-4b82-aaf4-b323a2e3266a/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "marepanauwa ta driya",
-      "meaning": "再見"
+      "meaning": "再見",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/55309ad0-8d58-44cd-9e30-bf6d5bd9da7a/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "semangalan",
-      "meaning": "謝謝；快樂、高興"
+      "meaning": "謝謝；快樂、高興",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/3750f23a-bfc3-42a5-8f85-403398efe163/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "ku",
-      "meaning": "我；我的"
+      "meaning": "我；我的",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/d0888f23-b98c-4eea-808e-35c3f15dfa06/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "yu",
-      "meaning": "你"
+      "meaning": "你",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/ef424d7d-9009-42dc-ab0b-61e8afb7bfcf/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "ta",
-      "meaning": "我們、咱們（包含式）"
+      "meaning": "我們、咱們（包含式）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/55860304-be5c-4b06-b864-abbb240a3b74/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "amau",
-      "meaning": "是；是嗎（語助詞）"
+      "meaning": "是；是嗎（語助詞）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/31b9b7c1-e029-4a71-9803-bf135d0ed748/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "amelri",
-      "meaning": "不是"
+      "meaning": "不是",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/11e26594-f3d6-4491-a7ad-a35c3d5543c6/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "adri",
-      "meaning": "不；沒有；不要（依句型而異）"
+      "meaning": "不；沒有；不要（依句型而異）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/911220d4-0cf0-4542-acde-4b7a665e49dc/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "a manay",
-      "meaning": "什麼；怎麼"
+      "meaning": "什麼；怎麼",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/e31d8e52-de78-470e-b20f-5ff3e3dd07d4/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "manay",
-      "meaning": "什麼；誰"
+      "meaning": "什麼；誰",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/2b5af7c6-0178-4b20-be08-ffa64773dd0e/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "isuwa",
-      "meaning": "哪裡；何處"
+      "meaning": "哪裡；何處",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/d8b4dc41-de61-43ef-bd20-2af86830f0a4/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "asuwa",
-      "meaning": "何時；什麼時候"
+      "meaning": "何時；什麼時候",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/1a64ce34-8709-4e3b-b3ee-0767be80356a/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "daw",
-      "meaning": "為什麼"
+      "meaning": "為什麼",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/fe3250ba-bfdd-4209-b32d-75a82b569087/download"
+      ]
     },
     {
       "category": "問候、代名詞與問句",
       "word": "munuma",
-      "meaning": "多少；幾"
+      "meaning": "多少；幾",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/6218252a-3a92-4a5a-961b-e648736a32de/download"
+      ]
     },
     {
       "category": "日期與一天中的時間",
       "word": "a daman",
-      "meaning": "昨天；前幾天"
+      "meaning": "昨天；前幾天",
+      "audioUrls": []
     },
     {
       "category": "日期與一天中的時間",
       "word": "garem",
-      "meaning": "現在；今天"
+      "meaning": "現在；今天",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/afed18d3-b5d5-4bb8-953a-4518f2c5a2c8/download"
+      ]
     },
     {
       "category": "日期與一天中的時間",
       "word": "an daman",
-      "meaning": "明天"
+      "meaning": "明天",
+      "audioUrls": []
     },
     {
       "category": "日期與一天中的時間",
       "word": "uninan",
-      "meaning": "今天；白天"
+      "meaning": "今天；白天",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/ae9c65d4-d835-4cd3-b6fa-4fff0bcf06c8/download"
+      ]
     },
     {
       "category": "日期與一天中的時間",
       "word": "semaluwan",
-      "meaning": "早上；上午"
+      "meaning": "早上；上午",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/d8f14b53-cad1-4fc0-8cd0-e729e4fa75b9/download"
+      ]
     },
     {
       "category": "日期與一天中的時間",
       "word": "rauban",
-      "meaning": "晚上"
+      "meaning": "晚上",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/06f0d421-cb27-4de6-8885-558b8a4fd6e4/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "ama",
-      "meaning": "爸爸；父執輩男性長輩的通稱"
+      "meaning": "爸爸；父執輩男性長輩的通稱",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/9c687ad7-83da-45d9-ae16-16ca11c01c63/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "ina",
-      "meaning": "媽媽；母執輩女性長輩的通稱"
+      "meaning": "媽媽；母執輩女性長輩的通稱",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/6a40e7e4-fd1c-4173-b381-4d12fbeeba86/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "walrak",
-      "meaning": "小孩；孩子"
+      "meaning": "小孩；孩子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/6a365bcb-c206-42c2-afa5-4c03626569e9/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "lralrakan",
-      "meaning": "孩子們；年輕人"
+      "meaning": "孩子們；年輕人",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/f8e0ab95-5957-4ecd-8470-d4ccc9d4e0ad/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "baelri",
-      "meaning": "哥哥或姊姊（我的／兄姊）"
+      "meaning": "哥哥或姊姊（我的／兄姊）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/fda2bc3a-125f-4a03-b1e9-c4974f222393/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "maluwadi",
-      "meaning": "兄弟姊妹"
+      "meaning": "兄弟姊妹",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/f5f34ccf-dfc2-4f1d-8529-8d09e3b8b6c1/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "ali",
-      "meaning": "朋友（男）"
+      "meaning": "朋友（男）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/b00f2433-ac0d-4296-8613-5adf980c556f/download"
+      ]
     },
     {
       "category": "家人與朋友",
       "word": "anay",
-      "meaning": "朋友（女）"
+      "meaning": "朋友（女）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/3ea592c6-e0fa-4dbc-bdae-4fd5a5929779/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "ruma",
-      "meaning": "家；房子"
+      "meaning": "家；房子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/c6351296-f61c-46e2-a052-37038c7b3ca4/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "sabak",
-      "meaning": "家裡；屋內；裡面"
+      "meaning": "家裡；屋內；裡面",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/548c3e7b-426f-4e04-b484-1b271c542377/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "saesa",
-      "meaning": "床；房間"
+      "meaning": "床；房間",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/2727bd14-c944-47f3-bfb8-dd30a7244a1e/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "alreban",
-      "meaning": "門"
+      "meaning": "門",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/872650aa-3a12-4148-b085-a59c01b881d4/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "etu",
-      "meaning": "桌子（詞典註為台語借詞）"
+      "meaning": "桌子（詞典註為台語借詞）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/572fe31f-81c9-4338-92e0-5b649af9b7f7/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "lipad",
-      "meaning": "凳子；椅子"
+      "meaning": "凳子；椅子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/7c6822f8-e49b-444b-a471-a6fe1723ac2b/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "katengadrawan",
-      "meaning": "椅子"
+      "meaning": "椅子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/f03d8156-297c-4635-969f-7285acac91f2/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "kiruwan",
-      "meaning": "衣服（衣物統稱）"
+      "meaning": "衣服（衣物統稱）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/f5fbf5bf-6184-457e-bb14-935d87c1bfe0/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "trukap",
-      "meaning": "鞋子"
+      "meaning": "鞋子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/eaf2b4da-b6ab-4a85-a6b8-7adf48576167/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "kabung",
-      "meaning": "帽子"
+      "meaning": "帽子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/78dc93eb-55cb-4724-bf50-46b11113e11c/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "kaising",
-      "meaning": "碗"
+      "meaning": "碗",
+      "audioUrls": []
     },
     {
       "category": "住家與日用品",
       "word": "takilr",
-      "meaning": "杯子"
+      "meaning": "杯子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/7864ac71-cabd-42c3-9312-88d58b2b6e76/download"
+      ]
     },
     {
       "category": "住家與日用品",
       "word": "siuy",
-      "meaning": "鍋子；飯鍋"
+      "meaning": "鍋子；飯鍋",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/31955bb8-2391-4770-9c3b-1fdca260ff52/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "aekanan",
-      "meaning": "食物"
+      "meaning": "食物",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/c841e21c-8af4-4e5a-986a-7ea8f728dc56/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "beras",
-      "meaning": "米；白米；米粒"
+      "meaning": "米；白米；米粒",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/9072aeb3-fe73-4f42-b018-a1ae10411ec6/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "lumay",
-      "meaning": "稻子；未脫殼的稻穀；稻米"
+      "meaning": "稻子；未脫殼的稻穀；稻米",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/49264d22-b167-4394-ab99-b8804932f0e3/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "enay",
-      "meaning": "水"
+      "meaning": "水",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/8577833c-047f-4819-9d43-ed607eef2a53/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "mekan",
-      "meaning": "吃；吃飯"
+      "meaning": "吃；吃飯",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/31941370-ceca-482d-aaba-91cdddb2fde0/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "trekel",
-      "meaning": "喝"
+      "meaning": "喝",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/74e372dd-9447-4c4f-a94c-5018c28869db/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "kenama",
-      "meaning": "早餐；吃早餐"
+      "meaning": "早餐；吃早餐",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/7f80becc-cc58-4e3e-b70b-0d68ac6de49a/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "karaalri",
-      "meaning": "午餐"
+      "meaning": "午餐",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/45cc0239-e221-4eaa-973a-d747063c49a4/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "kerabi",
-      "meaning": "晚餐；吃晚餐"
+      "meaning": "晚餐；吃晚餐",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/ef5ff843-bcc2-4dbb-a1fb-240ddc3a5b40/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "kuraw",
-      "meaning": "魚"
+      "meaning": "魚",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/f3e446ea-929b-4f91-9a25-532cc09a2c16/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "patraka",
-      "meaning": "肉"
+      "meaning": "肉",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/1f1fa5ac-ed0c-40f3-8b26-11674849d780/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "lriyung",
-      "meaning": "豬"
+      "meaning": "豬",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/17bf2d22-c861-4426-a0d9-9e848560ec19/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "kalimudan",
-      "meaning": "水果"
+      "meaning": "水果",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/c7283279-cde9-4328-a69b-1a0e06279bdd/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "belrbelr",
-      "meaning": "香蕉"
+      "meaning": "香蕉",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/f73fcb24-d8fc-4712-b446-619e515aedd8/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "bitrenun",
-      "meaning": "蛋"
+      "meaning": "蛋",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/3de61524-6e92-4d68-9539-64f3d2a73981/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "imaran",
-      "meaning": "好吃"
+      "meaning": "好吃",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/0ff53ab4-8baf-42bd-bf4f-cc461c45b646/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "sabelaw",
-      "meaning": "餓；肚子餓"
+      "meaning": "餓；肚子餓",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/c26b7303-1679-4eb1-b444-8c06c0e53f61/download"
+      ]
     },
     {
       "category": "飲食與用餐",
       "word": "aaw",
-      "meaning": "渴；口渴"
+      "meaning": "渴；口渴",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/0d0c6058-1e78-4170-bf9d-3d806c1f4719/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "alrupe",
-      "meaning": "睡；睡覺"
+      "meaning": "睡；睡覺",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/7d214b2e-1ee0-41db-b4f9-bcdb8cf3d04a/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "kemakawang",
-      "meaning": "走路；行走；步行"
+      "meaning": "走路；行走；步行",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/553d262b-b5bd-402c-93a4-ce3c7a9ab8b9/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "matengadraw",
-      "meaning": "坐著；坐下"
+      "meaning": "坐著；坐下",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/6e47577e-af50-4c13-b3e8-c5fa0a9fd30e/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "retigir",
-      "meaning": "站；站立"
+      "meaning": "站；站立",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/883e00f4-14fd-40be-a447-b2c7600118fc/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "base",
-      "meaning": "洗"
+      "meaning": "洗",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/e60394dc-4f45-40a4-a219-0fd015d36a7b/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "abel",
-      "meaning": "煮菜"
+      "meaning": "煮菜",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/23862fe1-8f33-465e-995a-e4c2ff0fd6ac/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "deru",
-      "meaning": "煮"
+      "meaning": "煮",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/0bcdeb6d-434a-4970-afce-29aa7308b114/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "alak",
-      "meaning": "拿"
+      "meaning": "拿",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/104ef85f-ec5a-438c-a2bf-6fd593830c6a/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "beray",
-      "meaning": "給；贈送"
+      "meaning": "給；贈送",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/26c2f17e-cdc7-447a-a9b6-9733dc65d402/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "trima",
-      "meaning": "買；價錢；價格"
+      "meaning": "買；價錢；價格",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/91d38914-8c85-4c7a-86ad-0f116d0c9cfc/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "meniwan",
-      "meaning": "賣；販賣"
+      "meaning": "賣；販賣",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/baa4838d-25ed-48a2-99ca-bc7c03609012/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "dalan",
-      "meaning": "路；道路；路途"
+      "meaning": "路；道路；路途",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/50080139-8dc3-4d8a-a157-89b25ead621c/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "bas",
-      "meaning": "公車"
+      "meaning": "公車",
+      "audioUrls": []
     },
     {
       "category": "日常動作與交通",
       "word": "didinsiya",
-      "meaning": "腳踏車"
+      "meaning": "腳踏車",
+      "audioUrls": []
     },
     {
       "category": "日常動作與交通",
       "word": "alamu",
-      "meaning": "過來；來"
+      "meaning": "過來；來",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/84bf0526-182e-4d84-b261-504904227971/download"
+      ]
     },
     {
       "category": "日常動作與交通",
       "word": "mayaa",
-      "meaning": "去找；來找"
+      "meaning": "去找；來找",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/2ff43ef0-8147-45e2-9809-9df7662a213d/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "dradrek",
-      "meaning": "身體"
+      "meaning": "身體",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/a3baee36-5c1d-4d18-b9cf-d1546d8ae505/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "lima",
-      "meaning": "手；另有「五」義"
+      "meaning": "手；另有「五」義",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/acc1957d-718b-4e0f-9103-da06ebe6871e/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "daduwas",
-      "meaning": "腳掌"
+      "meaning": "腳掌",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/7847c99d-6f72-49c0-a88a-cabe92279dc1/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "matra",
-      "meaning": "眼睛"
+      "meaning": "眼睛",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/3ca4e29f-aae4-457e-bccf-b814eb85df84/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "trangila",
-      "meaning": "耳朵"
+      "meaning": "耳朵",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/337b7618-a054-4fc5-83a2-4bfb639c8f58/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "indan",
-      "meaning": "嘴巴；口"
+      "meaning": "嘴巴；口",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/b6245ad0-a66c-4260-9bda-9463c1e5617f/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "tingeran",
-      "meaning": "鼻子"
+      "meaning": "鼻子",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/1f2433a7-63f1-4b0d-a859-fb0c9f4bc202/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "batring",
-      "meaning": "頭痛；痛（如頭痛）"
+      "meaning": "頭痛；痛（如頭痛）",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/97cd49f9-9518-4f77-af75-0dff42520c48/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "kualeng",
-      "meaning": "生病；病"
+      "meaning": "生病；病",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/d629f8ca-910a-4fc0-9df2-6f6176ffbdd0/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "puwatremel",
-      "meaning": "藥物；藥"
+      "meaning": "藥物；藥",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/b1717691-51f9-4a04-af40-beb13c44e731/download"
+      ]
     },
     {
       "category": "身體與健康",
       "word": "lritek",
-      "meaning": "冷"
+      "meaning": "冷",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/411276ab-93c7-47ad-8b49-9b4de2204185/download"
+      ]
     },
     {
       "category": "天氣、地形與動物",
       "word": "udalr",
-      "meaning": "雨"
+      "meaning": "雨",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/28704a01-a98a-4387-bd19-fdb9c6da7ed9/download"
+      ]
     },
     {
       "category": "天氣、地形與動物",
       "word": "drenan",
-      "meaning": "山；山上"
+      "meaning": "山；山上",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/98b05708-0f4a-466b-9cf7-16daea58bb26/download"
+      ]
     },
     {
       "category": "天氣、地形與動物",
       "word": "ine",
-      "meaning": "海"
+      "meaning": "海",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/3de0e9f8-7000-47ec-80c2-f118cade79a1/download"
+      ]
     },
     {
       "category": "天氣、地形與動物",
       "word": "suwan",
-      "meaning": "狗"
+      "meaning": "狗",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/d54b20ab-1cff-4930-bf75-4223bd4147af/download"
+      ]
     },
     {
       "category": "天氣、地形與動物",
       "word": "ngiyaw",
-      "meaning": "貓"
+      "meaning": "貓",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/cefb0714-e0cc-41fc-bae1-018488ac5795/download"
+      ]
     },
     {
       "category": "天氣、地形與動物",
       "word": "terekuk",
-      "meaning": "雞"
+      "meaning": "雞",
+      "audioUrls": [
+        "https://sys-dictionary.ilrdf.org.tw/Data/api/Storage/8c92b9f3-f117-4b37-b0b8-67ac04f3522d/download"
+      ]
     }
   ]
 }

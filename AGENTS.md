@@ -18,10 +18,9 @@
 | 新增分析筆記 | 在 `notes/` 加 `YYYY-MM-DD-主題.md`，並在 `notes/index.json` **最前面**加一筆 |
 | 新增 / 修改比賽 | `competitions/YYYY-MM-DD-代號.json`，一場比賽一個檔（格式見下方）。老師也可以在網站「比賽專區」按「＋ 新增比賽」 |
 | 原始檔清單 | `data/files.json`：只放檔名與私人儲存庫 `kebbi-dev` 裡的路徑，**檔案本身放 kebbi-dev，不要放進這個公開儲存庫** |
-| 卑南語生活詞彙 | `data/vocabulary.json`：維持分類、卑南語詞彙、中文釋義與官方來源連結；新增或修訂詞條時沿用官方辭典拼寫並保留來源歸屬 |
+| 卑南語生活詞彙 | `data/vocabulary.json`：維持分類、卑南語詞彙、中文釋義與官方來源連結；`audioUrls` 僅放官方錄音網址，無錄音詞條保持空陣列，不以未核實的 TTS 代填 |
 
 ### `status` 只能用這四個值
-
 `done`（完成）、`doing`（進行中）、`blocked`（卡住）、`todo`（待辦）
 
 ### 版本紀錄格式

@@ -102,8 +102,17 @@
   .vocab-count { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
   .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0; padding: 0; }
   .vocab-card { margin: 0; padding: 12px 14px; }
-  .vocab-card dt { font-family: ui-monospace, Consolas, monospace; font-size: 16px; font-weight: 700; }
+  .vocab-card dt { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-family: ui-monospace, Consolas, monospace; font-size: 16px; font-weight: 700; }
   .vocab-card dd { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .vocab-card dt > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+  .vocab-audio-list { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 5px; }
+  .vocab-audio { min-height: 30px; border: 1px solid var(--line); border-radius: 7px; padding: 4px 8px; background: var(--bg); color: var(--text); font: inherit; font-size: 12px; cursor: pointer; }
+  .vocab-audio:hover { border-color: var(--accent); color: var(--accent); }
+  .vocab-audio:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .vocab-audio[aria-busy="true"] { opacity: .7; }
+  .vocab-no-audio { color: var(--muted); font-size: 12px; font-weight: 400; white-space: nowrap; }
+  .vocab-audio-status { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+  .vocab-audio-status:empty { display: none; }
   .vocab-source { margin-top: 14px; }
   @media (max-width: 560px) { .vocab-controls { grid-template-columns: 1fr; } }
 </style>
@@ -177,7 +186,7 @@
   <section id="vocabulary" hidden>
     <div class="card">
       <h2 style="margin-top:0">卑南語生活詞彙</h2>
-      <p class="muted">按分類瀏覽，或用卑南語拼寫、中文釋義搜尋。詞彙拼寫保留官方辭典原文。</p>
+      <p class="muted">按分類瀏覽，或用卑南語拼寫、中文釋義搜尋。點擊「聽發音」可播放官方南王卑南語錄音；沒有錄音的詞目會明確標示。</p>
       <div class="vocab-controls">
         <label for="vocab-search">搜尋詞彙
           <input id="vocab-search" type="search" placeholder="輸入卑南語或中文，例如 enay、水、家人" autocomplete="off">
@@ -187,9 +196,10 @@
         </label>
       </div>
       <p class="vocab-count" id="vocab-count" aria-live="polite"></p>
+      <p class="vocab-audio-status" id="vocab-audio-status" role="status" aria-live="polite"></p>
     </div>
     <div id="vocab-list"></div>
-    <p class="muted vocab-source">資料取自《原住民族語言線上辭典》卑南語 2025 年 11 月更新版。<a href="https://e-dictionary.ilrdf.org.tw/textDownload?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&amp;tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E" target="_blank" rel="noopener">查看官方辭典</a></p>
+    <p class="muted vocab-source">詞彙取自《原住民族語言線上辭典》卑南語 2025 年 11 月更新版；錄音由官方辭典串流（南王卑南語）。<a href="https://e-dictionary.ilrdf.org.tw/singleSearch?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&amp;tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E" target="_blank" rel="noopener">查看並收聽官方辭典</a> · <a href="https://e-dictionary.ilrdf.org.tw/textDownload?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&amp;tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E" target="_blank" rel="noopener">下載辭典全文</a></p>
   </section>
   <section id="commits" hidden>
     <p class="muted">每一次修改網站資料都會留下一筆紀錄（來自 GitHub）。</p>
@@ -282,6 +292,8 @@ async function loadFiles() {
 
 // ---- 卑南語生活詞彙 ----
 let vocabularyEntries = [];
+let currentVocabularyAudio = null;
+let currentVocabularyAudioButton = null;
 
 async function loadVocabulary() {
   const list = document.getElementById('vocab-list');
@@ -296,6 +308,96 @@ async function loadVocabulary() {
     list.innerHTML = `<div class="card">無法載入卑南語詞彙（${esc(e.message)}）。請稍後重新整理。</div>`;
     document.getElementById('vocab-count').textContent = '';
   }
+}
+
+function isOfficialVocabularyAudioURL(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' &&
+      url.hostname === 'sys-dictionary.ilrdf.org.tw' &&
+      /^\/Data\/api\/Storage\/[0-9a-f-]+\/download$/i.test(url.pathname) &&
+      !url.search && !url.hash;
+  } catch (e) {
+    return false;
+  }
+}
+
+function renderVocabularyAudio(entry) {
+  const audioURLs = Array.isArray(entry.audioUrls) ? entry.audioUrls.filter(isOfficialVocabularyAudioURL) : [];
+  if (!audioURLs.length) return '<span class="vocab-no-audio" title="官方辭典尚未提供此詞錄音">尚無官方錄音</span>';
+  return audioURLs.map((url, index) => {
+    const label = audioURLs.length > 1 ? `聽發音 ${index + 1}` : '聽發音';
+    return `<button class="vocab-audio" type="button" data-audio-url="${esc(url)}" data-audio-word="${esc(entry.word)}" data-idle-label="${esc(label)}" title="播放官方南王卑南語錄音">${esc(label)}</button>`;
+  }).join('');
+}
+
+function stopVocabularyAudio(clearStatus = true) {
+  const audio = currentVocabularyAudio;
+  currentVocabularyAudio = null;
+  if (audio) audio.pause();
+  if (currentVocabularyAudioButton) {
+    currentVocabularyAudioButton.textContent = currentVocabularyAudioButton.dataset.idleLabel || '聽發音';
+    currentVocabularyAudioButton.removeAttribute('aria-busy');
+  }
+  currentVocabularyAudioButton = null;
+  if (clearStatus) document.getElementById('vocab-audio-status').textContent = '';
+}
+
+function playVocabularyAudio(button) {
+  const url = button.dataset.audioUrl;
+  const word = button.dataset.audioWord || '詞條';
+  const status = document.getElementById('vocab-audio-status');
+  if (!isOfficialVocabularyAudioURL(url)) {
+    status.textContent = '這個詞條沒有可用的官方錄音。';
+    return;
+  }
+  if (currentVocabularyAudio && currentVocabularyAudioButton === button) {
+    if (currentVocabularyAudio.paused) {
+      currentVocabularyAudio.play().catch(() => {
+        stopVocabularyAudio(false);
+        status.textContent = `無法播放「${word}」的官方錄音，請稍後重試或查看官方辭典。`;
+      });
+    } else {
+      currentVocabularyAudio.pause();
+    }
+    return;
+  }
+
+  stopVocabularyAudio(false);
+  const audio = new Audio(url);
+  currentVocabularyAudio = audio;
+  currentVocabularyAudioButton = button;
+  button.textContent = '載入中…';
+  button.setAttribute('aria-busy', 'true');
+  status.textContent = `正在載入「${word}」的官方錄音…`;
+
+  audio.addEventListener('playing', () => {
+    if (currentVocabularyAudio !== audio) return;
+    button.textContent = '播放中…';
+    button.removeAttribute('aria-busy');
+    status.textContent = `正在播放「${word}」的官方錄音。再次點擊可暫停。`;
+  });
+  audio.addEventListener('pause', () => {
+    if (currentVocabularyAudio !== audio || audio.ended) return;
+    button.textContent = '繼續播放';
+    button.removeAttribute('aria-busy');
+    status.textContent = `「${word}」的錄音已暫停。`;
+  });
+  audio.addEventListener('ended', () => {
+    if (currentVocabularyAudio !== audio) return;
+    stopVocabularyAudio(false);
+    status.textContent = `「${word}」的官方錄音播放完成。`;
+  });
+  audio.addEventListener('error', () => {
+    if (currentVocabularyAudio !== audio) return;
+    stopVocabularyAudio(false);
+    status.textContent = `無法載入「${word}」的官方錄音，請稍後重試或查看官方辭典。`;
+  });
+  audio.play().catch(() => {
+    if (currentVocabularyAudio !== audio) return;
+    stopVocabularyAudio(false);
+    status.textContent = `無法播放「${word}」的官方錄音，請稍後重試或查看官方辭典。`;
+  });
 }
 
 function renderVocabulary() {
@@ -320,13 +422,23 @@ function renderVocabulary() {
     <section class="vocab-group" aria-label="${esc(category)}">
       <h2>${esc(category)} <small class="muted">${entries.length} 詞</small></h2>
       <dl class="vocab-grid">${entries.map(entry => `
-        <div class="card vocab-card"><dt>${esc(entry.word)}</dt><dd>${esc(entry.meaning)}</dd></div>`).join('')}
+        <div class="card vocab-card"><dt><span>${esc(entry.word)}</span><span class="vocab-audio-list">${renderVocabularyAudio(entry)}</span></dt><dd>${esc(entry.meaning)}</dd></div>`).join('')}
       </dl>
     </section>`).join('');
 }
 
-document.getElementById('vocab-search').addEventListener('input', renderVocabulary);
-document.getElementById('vocab-category').addEventListener('change', renderVocabulary);
+document.getElementById('vocab-search').addEventListener('input', () => {
+  stopVocabularyAudio();
+  renderVocabulary();
+});
+document.getElementById('vocab-category').addEventListener('change', () => {
+  stopVocabularyAudio();
+  renderVocabulary();
+});
+document.getElementById('vocab-list').addEventListener('click', event => {
+  const button = event.target.closest('.vocab-audio');
+  if (button) playVocabularyAudio(button);
+});
 
 // ---- 比賽專區：每場比賽一個 competitions/*.json ----
 const CONTEST_STATUS = { planning: '準備中', registered: '已報名', ongoing: '比賽中', done: '已結束' };
