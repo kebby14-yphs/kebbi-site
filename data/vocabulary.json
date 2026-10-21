@@ -1,0 +1,477 @@
+{
+  "title": "卑南語生活詞彙",
+  "edition": "2025年11月更新版",
+  "source": "https://e-dictionary.ilrdf.org.tw/textDownload?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E",
+  "entries": [
+    {
+      "category": "問候、代名詞與問句",
+      "word": "inabayan",
+      "meaning": "你好（問候語）"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "sinabalran",
+      "meaning": "早安"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "marepanauwa ta driya",
+      "meaning": "再見"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "semangalan",
+      "meaning": "謝謝；快樂、高興"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "ku",
+      "meaning": "我；我的"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "yu",
+      "meaning": "你"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "ta",
+      "meaning": "我們、咱們（包含式）"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "amau",
+      "meaning": "是；是嗎（語助詞）"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "amelri",
+      "meaning": "不是"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "adri",
+      "meaning": "不；沒有；不要（依句型而異）"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "a manay",
+      "meaning": "什麼；怎麼"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "manay",
+      "meaning": "什麼；誰"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "isuwa",
+      "meaning": "哪裡；何處"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "asuwa",
+      "meaning": "何時；什麼時候"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "daw",
+      "meaning": "為什麼"
+    },
+    {
+      "category": "問候、代名詞與問句",
+      "word": "munuma",
+      "meaning": "多少；幾"
+    },
+    {
+      "category": "日期與一天中的時間",
+      "word": "a daman",
+      "meaning": "昨天；前幾天"
+    },
+    {
+      "category": "日期與一天中的時間",
+      "word": "garem",
+      "meaning": "現在；今天"
+    },
+    {
+      "category": "日期與一天中的時間",
+      "word": "an daman",
+      "meaning": "明天"
+    },
+    {
+      "category": "日期與一天中的時間",
+      "word": "uninan",
+      "meaning": "今天；白天"
+    },
+    {
+      "category": "日期與一天中的時間",
+      "word": "semaluwan",
+      "meaning": "早上；上午"
+    },
+    {
+      "category": "日期與一天中的時間",
+      "word": "rauban",
+      "meaning": "晚上"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "ama",
+      "meaning": "爸爸；父執輩男性長輩的通稱"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "ina",
+      "meaning": "媽媽；母執輩女性長輩的通稱"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "walrak",
+      "meaning": "小孩；孩子"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "lralrakan",
+      "meaning": "孩子們；年輕人"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "baelri",
+      "meaning": "哥哥或姊姊（我的／兄姊）"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "maluwadi",
+      "meaning": "兄弟姊妹"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "ali",
+      "meaning": "朋友（男）"
+    },
+    {
+      "category": "家人與朋友",
+      "word": "anay",
+      "meaning": "朋友（女）"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "ruma",
+      "meaning": "家；房子"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "sabak",
+      "meaning": "家裡；屋內；裡面"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "saesa",
+      "meaning": "床；房間"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "alreban",
+      "meaning": "門"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "etu",
+      "meaning": "桌子（詞典註為台語借詞）"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "lipad",
+      "meaning": "凳子；椅子"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "katengadrawan",
+      "meaning": "椅子"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "kiruwan",
+      "meaning": "衣服（衣物統稱）"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "trukap",
+      "meaning": "鞋子"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "kabung",
+      "meaning": "帽子"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "kaising",
+      "meaning": "碗"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "takilr",
+      "meaning": "杯子"
+    },
+    {
+      "category": "住家與日用品",
+      "word": "siuy",
+      "meaning": "鍋子；飯鍋"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "aekanan",
+      "meaning": "食物"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "beras",
+      "meaning": "米；白米；米粒"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "lumay",
+      "meaning": "稻子；未脫殼的稻穀；稻米"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "enay",
+      "meaning": "水"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "mekan",
+      "meaning": "吃；吃飯"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "trekel",
+      "meaning": "喝"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "kenama",
+      "meaning": "早餐；吃早餐"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "karaalri",
+      "meaning": "午餐"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "kerabi",
+      "meaning": "晚餐；吃晚餐"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "kuraw",
+      "meaning": "魚"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "patraka",
+      "meaning": "肉"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "lriyung",
+      "meaning": "豬"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "kalimudan",
+      "meaning": "水果"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "belrbelr",
+      "meaning": "香蕉"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "bitrenun",
+      "meaning": "蛋"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "imaran",
+      "meaning": "好吃"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "sabelaw",
+      "meaning": "餓；肚子餓"
+    },
+    {
+      "category": "飲食與用餐",
+      "word": "aaw",
+      "meaning": "渴；口渴"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "alrupe",
+      "meaning": "睡；睡覺"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "kemakawang",
+      "meaning": "走路；行走；步行"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "matengadraw",
+      "meaning": "坐著；坐下"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "retigir",
+      "meaning": "站；站立"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "base",
+      "meaning": "洗"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "abel",
+      "meaning": "煮菜"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "deru",
+      "meaning": "煮"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "alak",
+      "meaning": "拿"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "beray",
+      "meaning": "給；贈送"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "trima",
+      "meaning": "買；價錢；價格"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "meniwan",
+      "meaning": "賣；販賣"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "dalan",
+      "meaning": "路；道路；路途"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "bas",
+      "meaning": "公車"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "didinsiya",
+      "meaning": "腳踏車"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "alamu",
+      "meaning": "過來；來"
+    },
+    {
+      "category": "日常動作與交通",
+      "word": "mayaa",
+      "meaning": "去找；來找"
+    },
+    {
+      "category": "身體與健康",
+      "word": "dradrek",
+      "meaning": "身體"
+    },
+    {
+      "category": "身體與健康",
+      "word": "lima",
+      "meaning": "手；另有「五」義"
+    },
+    {
+      "category": "身體與健康",
+      "word": "daduwas",
+      "meaning": "腳掌"
+    },
+    {
+      "category": "身體與健康",
+      "word": "matra",
+      "meaning": "眼睛"
+    },
+    {
+      "category": "身體與健康",
+      "word": "trangila",
+      "meaning": "耳朵"
+    },
+    {
+      "category": "身體與健康",
+      "word": "indan",
+      "meaning": "嘴巴；口"
+    },
+    {
+      "category": "身體與健康",
+      "word": "tingeran",
+      "meaning": "鼻子"
+    },
+    {
+      "category": "身體與健康",
+      "word": "batring",
+      "meaning": "頭痛；痛（如頭痛）"
+    },
+    {
+      "category": "身體與健康",
+      "word": "kualeng",
+      "meaning": "生病；病"
+    },
+    {
+      "category": "身體與健康",
+      "word": "puwatremel",
+      "meaning": "藥物；藥"
+    },
+    {
+      "category": "身體與健康",
+      "word": "lritek",
+      "meaning": "冷"
+    },
+    {
+      "category": "天氣、地形與動物",
+      "word": "udalr",
+      "meaning": "雨"
+    },
+    {
+      "category": "天氣、地形與動物",
+      "word": "drenan",
+      "meaning": "山；山上"
+    },
+    {
+      "category": "天氣、地形與動物",
+      "word": "ine",
+      "meaning": "海"
+    },
+    {
+      "category": "天氣、地形與動物",
+      "word": "suwan",
+      "meaning": "狗"
+    },
+    {
+      "category": "天氣、地形與動物",
+      "word": "ngiyaw",
+      "meaning": "貓"
+    },
+    {
+      "category": "天氣、地形與動物",
+      "word": "terekuk",
+      "meaning": "雞"
+    }
+  ]
+}

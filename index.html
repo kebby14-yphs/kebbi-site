@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>凱比開發進度</title>
-<meta name="description" content="NUWA 凱比機器人 USB 開發進度、版本紀錄與分析筆記，由 Claude 與 Manus 共同更新。">
+<meta name="description" content="NUWA 凱比機器人 USB 開發進度、卑南語生活詞彙查詢、版本紀錄與分析筆記。">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <style>
@@ -96,6 +96,16 @@
   .muted { color: var(--muted); font-size: 14px; }
   footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
   @media (max-width: 560px) { .commit { grid-template-columns: 1fr; gap: 2px; } }
+  .vocab-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 260px); gap: 12px; align-items: end; }
+  .vocab-controls label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--muted); }
+  .vocab-controls input, .vocab-controls select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; width: 100%; }
+  .vocab-count { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0; padding: 0; }
+  .vocab-card { margin: 0; padding: 12px 14px; }
+  .vocab-card dt { font-family: ui-monospace, Consolas, monospace; font-size: 16px; font-weight: 700; }
+  .vocab-card dd { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .vocab-source { margin-top: 14px; }
+  @media (max-width: 560px) { .vocab-controls { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -113,6 +123,7 @@
     <button role="tab" data-tab="notes" aria-selected="false">分析筆記</button>
     <button role="tab" data-tab="files" aria-selected="false">原始檔</button>
     <button role="tab" data-tab="commits" aria-selected="false">更新紀錄</button>
+    <button role="tab" data-tab="vocabulary" aria-selected="false">卑南語辭典</button>
   </nav>
 
   <section id="status"></section>
@@ -162,6 +173,23 @@
   <section id="files" hidden>
     <p class="muted">🔒 原始檔放在私人儲存庫，需要用專案的 GitHub 帳號登入才能開啟與下載。下載後用 NUWA 對應的工具匯入。</p>
     <div id="file-groups"></div>
+  </section>
+  <section id="vocabulary" hidden>
+    <div class="card">
+      <h2 style="margin-top:0">卑南語生活詞彙</h2>
+      <p class="muted">按分類瀏覽，或用卑南語拼寫、中文釋義搜尋。詞彙拼寫保留官方辭典原文。</p>
+      <div class="vocab-controls">
+        <label for="vocab-search">搜尋詞彙
+          <input id="vocab-search" type="search" placeholder="輸入卑南語或中文，例如 enay、水、家人" autocomplete="off">
+        </label>
+        <label for="vocab-category">詞彙分類
+          <select id="vocab-category"><option value="">全部分類</option></select>
+        </label>
+      </div>
+      <p class="vocab-count" id="vocab-count" aria-live="polite"></p>
+    </div>
+    <div id="vocab-list"></div>
+    <p class="muted vocab-source">資料取自《原住民族語言線上辭典》卑南語 2025 年 11 月更新版。<a href="https://e-dictionary.ilrdf.org.tw/textDownload?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&amp;tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E" target="_blank" rel="noopener">查看官方辭典</a></p>
   </section>
   <section id="commits" hidden>
     <p class="muted">每一次修改網站資料都會留下一筆紀錄（來自 GitHub）。</p>
@@ -251,6 +279,54 @@ async function loadFiles() {
         <span class="muted size">${Number(f.kb).toLocaleString()} KB</span>
       </div>`).join('')}</div>`).join('');
 }
+
+// ---- 卑南語生活詞彙 ----
+let vocabularyEntries = [];
+
+async function loadVocabulary() {
+  const list = document.getElementById('vocab-list');
+  const categorySelect = document.getElementById('vocab-category');
+  try {
+    const data = await getJSON('data/vocabulary.json');
+    vocabularyEntries = Array.isArray(data.entries) ? data.entries : [];
+    const categories = [...new Set(vocabularyEntries.map(entry => entry.category))];
+    categorySelect.innerHTML = '<option value="">全部分類</option>' + categories.map(category => `<option value="${esc(category)}">${esc(category)}</option>`).join('');
+    renderVocabulary();
+  } catch (e) {
+    list.innerHTML = `<div class="card">無法載入卑南語詞彙（${esc(e.message)}）。請稍後重新整理。</div>`;
+    document.getElementById('vocab-count').textContent = '';
+  }
+}
+
+function renderVocabulary() {
+  const query = document.getElementById('vocab-search').value.trim().toLocaleLowerCase();
+  const selectedCategory = document.getElementById('vocab-category').value;
+  const grouped = new Map();
+  for (const entry of vocabularyEntries) {
+    if (selectedCategory && entry.category !== selectedCategory) continue;
+    const searchable = `${entry.word} ${entry.meaning} ${entry.category}`.toLocaleLowerCase();
+    if (query && !searchable.includes(query)) continue;
+    if (!grouped.has(entry.category)) grouped.set(entry.category, []);
+    grouped.get(entry.category).push(entry);
+  }
+  const visibleCount = [...grouped.values()].reduce((total, entries) => total + entries.length, 0);
+  document.getElementById('vocab-count').textContent = `顯示 ${visibleCount} / ${vocabularyEntries.length} 個詞條`;
+  const list = document.getElementById('vocab-list');
+  if (!visibleCount) {
+    list.innerHTML = '<div class="card muted">沒有符合條件的詞條。試試較短的關鍵字，或清除分類篩選。</div>';
+    return;
+  }
+  list.innerHTML = [...grouped.entries()].map(([category, entries]) => `
+    <section class="vocab-group" aria-label="${esc(category)}">
+      <h2>${esc(category)} <small class="muted">${entries.length} 詞</small></h2>
+      <dl class="vocab-grid">${entries.map(entry => `
+        <div class="card vocab-card"><dt>${esc(entry.word)}</dt><dd>${esc(entry.meaning)}</dd></div>`).join('')}
+      </dl>
+    </section>`).join('');
+}
+
+document.getElementById('vocab-search').addEventListener('input', renderVocabulary);
+document.getElementById('vocab-category').addEventListener('change', renderVocabulary);
 
 // ---- 比賽專區：每場比賽一個 competitions/*.json ----
 const CONTEST_STATUS = { planning: '準備中', registered: '已報名', ongoing: '比賽中', done: '已結束' };
@@ -366,11 +442,11 @@ async function loadCommits() {
 (async () => {
   try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
   catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
-  await loadContests();
+  await Promise.all([loadContests(), loadVocabulary()]);
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
   else if (h.startsWith('contest=')) openContest(contests.findIndex(c => c._file === h.slice(8)));
-  else if (['status', 'contests', 'versions', 'notes', 'files', 'commits'].includes(h)) showTab(h);
+  else if (['status', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary'].includes(h)) showTab(h);
   else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
 })();
 </script>
