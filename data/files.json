@@ -1,5 +1,29 @@
 [
     {
+        "folder":  "KebbiHello",
+        "title":  "凱比教卑南語 App（10/21）",
+        "files":  [
+                      {
+                          "name":  "凱比教卑南語-2026-10-21.apk（安裝檔）",
+                          "path":  "releases/凱比教卑南語-2026-10-21.apk",
+                          "tool":  "Android App",
+                          "kb":  2183
+                      },
+                      {
+                          "name":  "README.md（功能、詞彙表、開發重點）",
+                          "path":  "KebbiHello/README.md",
+                          "tool":  "說明",
+                          "kb":  3
+                      },
+                      {
+                          "name":  "MainActivity.java（程式）",
+                          "path":  "KebbiHello/app/src/main/java/tw/yphs/kebbihello/MainActivity.java",
+                          "tool":  "程式碼",
+                          "kb":  11
+                      }
+                  ]
+    },
+    {
         "folder":  "voice-debug-v4",
         "title":  "語音偵錯 v4（10/20）",
         "files":  [
