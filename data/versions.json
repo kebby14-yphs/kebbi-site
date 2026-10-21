@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.13",
+    "date": "2026-10-21",
+    "author": "Claude",
+    "title": "語音偵錯 v4 放進 CodeLab",
+    "changes": [
+      "上傳自製的 v4 .koding 成功，但內容仍是 v3：CodeLab 讀的是檔案裡加密的 my.pinfo，不讀 script.xml",
+      "改法：在匯入的專案裡把 v4 積木載入編輯器，改名「AI上卑南_語音偵錯_v4」並存檔；重新載入確認是 v4（48 個積木、3 次上限、接受清單）",
+      "傳到凱比實測時凱比離線，待下次上線再測"
+    ]
+  },
+  {
     "version": "1.12",
     "date": "2026-10-21",
     "author": "Claude",
