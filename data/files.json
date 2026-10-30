@@ -1,5 +1,23 @@
 [
     {
+        "folder":  "voice-practice-v5",
+        "title":  "語音練習 v5：有開口就鼓勵（10/30）",
+        "files":  [
+                      {
+                          "name":  "README.md（流程、實測結果、換詞方法）",
+                          "path":  "voice-practice-v5/README.md",
+                          "tool":  "說明",
+                          "kb":  2
+                      },
+                      {
+                          "name":  "script.xml（程式積木）",
+                          "path":  "voice-practice-v5/script.xml",
+                          "tool":  "程式實驗室",
+                          "kb":  3
+                      }
+                  ]
+    },
+    {
         "folder":  "KebbiHello",
         "title":  "凱比教卑南語 App（10/21）",
         "files":  [
