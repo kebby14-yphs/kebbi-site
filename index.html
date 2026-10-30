@@ -94,6 +94,18 @@
   article pre code { background: none; padding: 0; }
   a { color: var(--accent); }
   .muted { color: var(--muted); font-size: 14px; }
+  .search { position: relative; margin-top: 20px; }
+  .search input { width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 40px 10px 14px; }
+  .search input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .search kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; }
+  #search-results { margin-top: 8px; }
+  .hit { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--text); text-decoration: none; }
+  .hit:last-child { border-bottom: 0; }
+  .hit:hover strong { color: var(--accent); }
+  .hit .where { font-size: 12px; color: var(--muted); margin-right: 8px; border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; }
+  .hit p { margin: 4px 0 0; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+  mark { background: color-mix(in srgb, var(--accent) 30%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+  .flash { outline: 2px solid var(--accent); outline-offset: 2px; }
   footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
   @media (max-width: 560px) { .commit { grid-template-columns: 1fr; gap: 2px; } }
   .vocab-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 260px); gap: 12px; align-items: end; }
@@ -123,6 +135,11 @@
     <h1>凱比開發進度</h1>
     <p>NUWA 凱比機器人 USB 開發：進度、版本紀錄與分析筆記</p>
     <div class="meta" id="meta"></div>
+    <div class="search" role="search">
+      <input type="search" id="search-box" placeholder="搜尋全站：進度、比賽、版本、筆記內文、原始檔、卑南語詞彙…" aria-label="搜尋全站" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+    <div class="card" id="search-results" hidden></div>
   </header>
 
   <nav role="tablist">
@@ -225,6 +242,16 @@ function showTab(name) {
   try { localStorage.setItem('kebbi-tab', name); } catch (e) {}
   if (name === 'commits') loadCommits();
 }
+// 全站搜尋索引：各分頁載入時登記 { where, title, text, go }
+const SEARCH = {};
+const TAB_NAMES = Object.fromEntries([...document.querySelectorAll('nav button')].map(b => [b.dataset.tab, b.textContent]));
+function focusCard(tab, selector, n) {
+  showTab(tab);
+  const el = document.querySelectorAll('#' + tab + ' ' + selector)[n];
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600);
+}
 document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => {
   showTab(b.dataset.tab);
   history.replaceState(null, '', '#' + b.dataset.tab);
@@ -242,6 +269,9 @@ async function loadStatus() {
       <p>${esc(g.detail)}</p>
     </div>`).join('');
   const next = (s.next || []).map(n => `<li>${esc(n)}</li>`).join('');
+  SEARCH.status = [
+    ...(s.goals || []).map((g, n) => ({ where: 'status', title: g.title, text: [STATUS_TEXT[g.status], g.detail].join(' '), go: () => focusCard('status', '.goal', n) })),
+    ...(s.next || []).map((x, n) => ({ where: 'status', title: '下一步', text: x, go: () => focusCard('status', '.next li', n) }))];
   document.getElementById('status').innerHTML = goals + (next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : '');
 }
 
@@ -266,6 +296,10 @@ async function loadAI() {
       <h2>功能進度</h2>${parts}
       ${next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : ''}
       <h2>開發紀錄</h2><div class="card">${log}</div>`;
+    SEARCH.ai = [
+      ...(a.components || []).map((g, n) => ({ where: 'ai', title: g.title, text: [STATUS_TEXT[g.status], g.detail].join(' '), go: () => focusCard('ai', '.goal', n) })),
+      ...(a.next || []).map((x, n) => ({ where: 'ai', title: '下一步', text: x, go: () => focusCard('ai', '.next li', n) })),
+      ...(a.log || []).map((l, n) => ({ where: 'ai', title: '開發紀錄 ' + (l.date || ''), text: [l.text, l.author].join(' '), go: () => focusCard('ai', '.commit', n) }))];
   } catch (e) {
     box.innerHTML = `<div class="card">無法載入本機 AI 紀錄（${esc(e.message)}）。</div>`;
   }
@@ -273,6 +307,7 @@ async function loadAI() {
 
 async function loadVersions() {
   const list = await getJSON('data/versions.json');
+  SEARCH.versions = list.map((v, n) => ({ where: 'versions', title: 'v' + v.version + ' ' + (v.title || ''), text: [v.date, v.author, ...(v.changes || [])].join(' '), go: () => focusCard('versions', '.card', n) }));
   document.getElementById('versions').innerHTML = list.map(v => `
     <div class="card">
       <div class="ver"><span class="v">v${esc(v.version)}</span><strong>${esc(v.title)}</strong><small>${esc(v.date)} · ${esc(v.author)}</small></div>
@@ -284,6 +319,10 @@ async function loadNotes() {
   const list = await getJSON('notes/index.json');
   document.getElementById('notes-list').innerHTML = list.map(n =>
     `<a href="#note=${encodeURIComponent(n.file)}" data-file="${esc(n.file)}">${esc(n.title)}<small>${esc(n.date)} · ${esc(n.author)}</small></a>`).join('');
+  const goNote = file => () => { openNote(file); history.replaceState(null, '', '#note=' + encodeURIComponent(file)); };
+  SEARCH.notes = list.map(n => ({ where: 'notes', title: n.title, text: [n.date, n.author].join(' '), go: goNote(n.file) }));
+  // 背景讀每篇筆記全文，讓搜尋也找得到內文
+  list.forEach((n, k) => fetch(fresh('notes/' + n.file), { cache: 'no-store' }).then(r => r.ok ? r.text() : '').then(t => { SEARCH.notes[k].text += ' ' + t; }).catch(() => {}));
   document.querySelectorAll('#notes-list a').forEach(a => a.addEventListener('click', e => {
     e.preventDefault(); openNote(a.dataset.file); history.replaceState(null, '', '#note=' + encodeURIComponent(a.dataset.file));
   }));
@@ -306,6 +345,8 @@ const privateLink = p => `https://github.com/${PRIVATE_REPO}/blob/main/` + p.spl
 async function loadFiles() {
   const groups = fileGroups = await getJSON('data/files.json');
   const link = privateLink;
+  SEARCH.files = groups.flatMap(g => g.files.map(f => ({ where: 'files', title: f.name, text: [g.title, f.path, f.tool].join(' '),
+    go: () => { showTab('files'); window.open(privateLink(f.path), '_blank', 'noopener'); } })));
   const folderSelect = document.getElementById('contest-folders');
   folderSelect.innerHTML = groups.map(g => `<option value="${esc(g.folder)}">${esc(g.title)}</option>`).join('');
   document.getElementById('file-groups').innerHTML = groups.map(g => `
@@ -329,6 +370,14 @@ async function loadVocabulary() {
   try {
     const data = await getJSON('data/vocabulary.json');
     vocabularyEntries = Array.isArray(data.entries) ? data.entries : [];
+    SEARCH.vocabulary = vocabularyEntries.map(entry => ({ where: 'vocabulary', title: entry.word, text: [entry.meaning, entry.category].join(' '),
+      go: () => {
+        showTab('vocabulary');
+        document.getElementById('vocab-search').value = entry.word;
+        document.getElementById('vocab-category').value = '';
+        stopVocabularyAudio(); renderVocabulary();
+        document.getElementById('vocab-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } }));
     const categories = [...new Set(vocabularyEntries.map(entry => entry.category))];
     categorySelect.innerHTML = '<option value="">全部分類</option>' + categories.map(category => `<option value="${esc(category)}">${esc(category)}</option>`).join('');
     renderVocabulary();
@@ -492,6 +541,9 @@ async function loadContests() {
     box.innerHTML = `<div class="card">無法載入比賽清單（${esc(e.message)}）。可到 <a href="https://github.com/${REPO}/tree/main/competitions">GitHub</a> 查看。</div>`;
     return;
   }
+  SEARCH.contests = contests.map((c, i) => ({ where: 'contests', title: c.name,
+    text: [c.date, CONTEST_STATUS[c.status], c.organizer, c.location, c.team, c.result, c.summary, c.description, (c.links || []).map(l => l.title).join(' ')].join(' '),
+    go: () => { openContest(i); history.replaceState(null, '', '#contest=' + encodeURIComponent(c._file)); } }));
   box.innerHTML = contests.length ? contests.map((c, i) => `
     <a class="card contest" href="#contest=${encodeURIComponent(c._file)}" data-i="${i}">
       <div class="row"><span class="badge ${esc(c.status)}">${esc(CONTEST_STATUS[c.status] || c.status || '未設定')}</span>${esc(c.date)}${c.result && c.result !== '待補' ? ' · ' + esc(c.result) : ''}</div>
@@ -578,6 +630,50 @@ async function loadCommits() {
     box.innerHTML = `無法載入 GitHub 紀錄（${esc(e.message)}）。可直接到 <a href="https://github.com/${REPO}/commits/main">GitHub</a> 查看。`;
   }
 }
+
+// ---- 全站搜尋 ----
+function snippet(text, words) {
+  const t = String(text || '').replace(/[#*_`>|]+/g, ' ').replace(/\s+/g, ' ').trim(), low = t.toLowerCase();
+  const found = words.map(w => low.indexOf(w)).filter(i => i >= 0);
+  const at = Math.max(0, (found.length ? Math.min(...found) : 0) - 30);
+  return (at > 0 ? '…' : '') + t.slice(at, at + 110) + (t.length > at + 110 ? '…' : '');
+}
+function highlight(text, words) {
+  let h = esc(text);
+  words.forEach(w => { h = h.replace(new RegExp(esc(w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), m => '<mark>' + m + '</mark>'); });
+  return h;
+}
+const SEARCH_ORDER = ['status', 'ai', 'contests', 'versions', 'notes', 'files', 'vocabulary'];
+function runSearch(q) {
+  const box = document.getElementById('search-results');
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) { box.hidden = true; box.innerHTML = ''; return; }
+  // 空白分開的每個詞都要出現；標題命中的排前面
+  const hits = SEARCH_ORDER.flatMap(t => SEARCH[t] || []).map(e => {
+    const title = String(e.title || '').toLowerCase(), all = title + ' ' + String(e.text || '').toLowerCase();
+    return words.every(w => all.includes(w)) ? { e, score: words.filter(w => title.includes(w)).length } : null;
+  }).filter(Boolean).sort((a, b) => b.score - a.score).slice(0, 30);
+  box.hidden = false;
+  box.innerHTML = hits.length
+    ? `<p class="muted" style="margin:0 0 4px">找到 ${hits.length}${hits.length === 30 ? '+' : ''} 筆（Enter 開第一筆，Esc 關閉）</p>` +
+      hits.map((h, n) => `<a class="hit" href="#" data-n="${n}"><span class="where">${esc(TAB_NAMES[h.e.where] || h.e.where)}</span><strong>${highlight(h.e.title, words)}</strong><p>${highlight(snippet(h.e.text, words), words)}</p></a>`).join('')
+    : `<p class="muted" style="margin:0">找不到「${esc(q)}」。換個關鍵字，或用空白分開多個詞試試。</p>`;
+  box.querySelectorAll('.hit').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); box.hidden = true; hits[+a.dataset.n].e.go(); }));
+}
+(() => {
+  const input = document.getElementById('search-box');
+  let timer;
+  input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => runSearch(input.value), 150); });
+  input.addEventListener('focus', () => { if (input.value) runSearch(input.value); });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { input.value = ''; runSearch(''); input.blur(); }
+    if (e.key === 'Enter') { const first = document.querySelector('#search-results .hit'); if (first) first.click(); }
+  });
+  // 按「/」跳到搜尋框（正在輸入時不搶）
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) { e.preventDefault(); input.focus(); }
+  });
+})();
 
 (async () => {
   try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
