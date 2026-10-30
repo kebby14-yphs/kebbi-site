@@ -127,6 +127,7 @@
 
   <nav role="tablist">
     <button role="tab" data-tab="status" aria-selected="true">目前進度</button>
+    <button role="tab" data-tab="ai" aria-selected="false">本機 AI</button>
     <button role="tab" data-tab="contests" aria-selected="false">比賽專區</button>
     <button role="tab" data-tab="versions" aria-selected="false">版本紀錄</button>
     <button role="tab" data-tab="notes" aria-selected="false">分析筆記</button>
@@ -136,6 +137,7 @@
   </nav>
 
   <section id="status"></section>
+  <section id="ai" hidden></section>
   <section id="contests" hidden>
     <div class="toolbar">
       <p class="muted">每場比賽一張卡片，點開看詳細內容與相關原始檔。</p>
@@ -241,6 +243,32 @@ async function loadStatus() {
     </div>`).join('');
   const next = (s.next || []).map(n => `<li>${esc(n)}</li>`).join('');
   document.getElementById('status').innerHTML = goals + (next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : '');
+}
+
+async function loadAI() {
+  const box = document.getElementById('ai');
+  try {
+    const a = await getJSON('data/ai.json');
+    const flow = (a.architecture || []).map(x => `<li>${esc(x)}</li>`).join('');
+    const parts = (a.components || []).map(g => `
+      <div class="card goal">
+        <span class="badge ${esc(g.status)}">${esc(STATUS_TEXT[g.status] || g.status)}</span>
+        <h3>${esc(g.title)}</h3>
+        <p>${esc(g.detail)}</p>
+      </div>`).join('');
+    const log = (a.log || []).map(l => `
+      <div class="commit"><time>${esc(l.date)}</time><span>${esc(l.text)}</span><small class="muted">${esc(l.author)}</small></div>`).join('');
+    const next = (a.next || []).map(n => `<li>${esc(n)}</li>`).join('');
+    box.innerHTML = `
+      <div class="card"><p style="margin:0">${esc(a.summary)}</p>
+        <p class="muted" style="margin:8px 0 0">運作方式：</p><ol class="next">${flow}</ol>
+        <p class="muted" style="margin:8px 0 0">最後更新 ${esc(a.updated)}</p></div>
+      <h2>功能進度</h2>${parts}
+      ${next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : ''}
+      <h2>開發紀錄</h2><div class="card">${log}</div>`;
+  } catch (e) {
+    box.innerHTML = `<div class="card">無法載入本機 AI 紀錄（${esc(e.message)}）。</div>`;
+  }
 }
 
 async function loadVersions() {
@@ -554,11 +582,11 @@ async function loadCommits() {
 (async () => {
   try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
   catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
-  await Promise.all([loadContests(), loadVocabulary()]);
+  await Promise.all([loadAI(), loadContests(), loadVocabulary()]);
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
   else if (h.startsWith('contest=')) openContest(contests.findIndex(c => c._file === h.slice(8)));
-  else if (['status', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary'].includes(h)) showTab(h);
+  else if (['status', 'ai', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary'].includes(h)) showTab(h);
   else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
 })();
 </script>

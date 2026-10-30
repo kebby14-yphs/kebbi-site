@@ -14,6 +14,7 @@
 |---|---|
 | 更新某個目標的狀態 | `data/status.json` 的 `goals`，並更新 `updated` 日期 |
 | 更新「下一步」清單 | `data/status.json` 的 `next` |
+| 本機 AI 開發進度 | `data/ai.json`：`components` 的狀態、`log` **最前面**加一筆、`next`，並更新 `updated` |
 | 記錄一個新版本 | 在 `data/versions.json` **最前面**加一筆 |
 | 新增分析筆記 | 在 `notes/` 加 `YYYY-MM-DD-主題.md`，並在 `notes/index.json` **最前面**加一筆 |
 | 新增 / 修改比賽 | `competitions/YYYY-MM-DD-代號.json`，一場比賽一個檔（格式見下方）。老師也可以在網站「比賽專區」按「＋ 新增比賽」 |
