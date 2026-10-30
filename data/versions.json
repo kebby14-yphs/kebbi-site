@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.14",
+    "date": "2026-10-30",
+    "author": "Claude",
+    "title": "語音偵錯 v4 實測",
+    "changes": [
+      "從 CodeLab 把 v4 傳到凱比實測：唸出辨識結果、最多 3 次、最後示範發音，整個流程正確結束",
+      "凱比把 inavayan 依序聽成 England、albion、ambient：雲端辨識當成英文，每次結果不同",
+      "結論：卑南語發音不適合用凱比的語音辨識判斷對錯；新增分析筆記與改善方向",
+      "今天學校網路（class）可以連上 NUWA 網站"
+    ]
+  },
+  {
     "version": "1.13",
     "date": "2026-10-21",
     "author": "Claude",
