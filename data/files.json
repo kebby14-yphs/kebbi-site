@@ -1,5 +1,95 @@
 [
     {
+        "folder": "kebbi-brain",
+        "title": "凱比本機 AI 大腦（11/06）",
+        "files": [
+            {
+                "name": "README.md（安裝、啟動、功能說明）",
+                "path": "kebbi-brain/README.md",
+                "tool": "說明",
+                "kb": 3
+            },
+            {
+                "name": "start.bat（一鍵啟動）",
+                "path": "kebbi-brain/start.bat",
+                "tool": "Windows",
+                "kb": 1
+            },
+            {
+                "name": "server.py（大腦伺服器）",
+                "path": "kebbi-brain/server.py",
+                "tool": "Python",
+                "kb": 19
+            },
+            {
+                "name": "pronounce.py（發音比對：聲音相似度）",
+                "path": "kebbi-brain/pronounce.py",
+                "tool": "Python",
+                "kb": 12
+            },
+            {
+                "name": "phoneme.py（音素比對：逐音找出念錯的音）",
+                "path": "kebbi-brain/phoneme.py",
+                "tool": "Python",
+                "kb": 7
+            },
+            {
+                "name": "speakers.py（聲紋分辨學生）",
+                "path": "kebbi-brain/speakers.py",
+                "tool": "Python",
+                "kb": 7
+            },
+            {
+                "name": "viz.html（老師頁面：發音波形比對）",
+                "path": "kebbi-brain/static/viz.html",
+                "tool": "網頁",
+                "kb": 23
+            },
+            {
+                "name": "recordings.html（老師頁面：錄音管理）",
+                "path": "kebbi-brain/static/recordings.html",
+                "tool": "網頁",
+                "kb": 24
+            },
+            {
+                "name": "eval_real.py（真實錄音方法比較）",
+                "path": "kebbi-brain/eval_real.py",
+                "tool": "Python",
+                "kb": 3
+            },
+            {
+                "name": "卑南語音標對照表_待族語老師確認.md",
+                "path": "kebbi-brain/卑南語音標對照表_待族語老師確認.md",
+                "tool": "說明",
+                "kb": 3
+            },
+            {
+                "name": "requirements.txt（需要的套件）",
+                "path": "kebbi-brain/requirements.txt",
+                "tool": "Python",
+                "kb": 1
+            }
+        ]
+    },
+    {
+        "folder": "KebbiHello-v2",
+        "title": "凱比教卑南語 App v2：發音練習、老師控制（11/06）",
+        "files": [
+            {
+                "name": "凱比教卑南語-2026-11-06-發音比對-老師控制.apk（安裝檔）",
+                "path": "releases/凱比教卑南語-2026-11-06-發音比對-老師控制.apk",
+                "tool": "Android App",
+                "kb": 2202
+            },
+            {
+                "name": "MainActivity.java（主程式）",
+                "path": "KebbiHello/app/src/main/java/tw/yphs/kebbihello/MainActivity.java",
+                "tool": "Android App",
+                "kb": 30
+            }
+        ]
+    },
+    {
         "folder":  "voice-practice-v5",
         "title":  "語音練習 v5：有開口就鼓勵（10/30）",
         "files":  [
