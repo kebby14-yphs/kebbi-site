@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>凱比錄音管理（展示版）</title>
+<meta name="description" content="凱比錄音管理頁面展示版：用官方辭典錄音模擬學生，不含任何學生錄音。">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #e3e6ec;
+    --accent: #2563eb; --great: #1f9d55; --err: #dc2626; --silent: #6b7280; --sel: rgba(37, 99, 235, .08); --demo: #7c3aed;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11151c; --card: #19202a; --text: #e6e9ef; --muted: #9aa3b2; --line: #2a3340;
+      --accent: #60a5fa; --great: #4ade80; --err: #f87171; --silent: #9ca3af; --sel: rgba(96, 165, 250, .12); --demo: #c4b5fd;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #11151c; --card: #19202a; --text: #e6e9ef; --muted: #9aa3b2; --line: #2a3340;
+    --accent: #60a5fa; --great: #4ade80; --err: #f87171; --silent: #9ca3af; --sel: rgba(96, 165, 250, .12); --demo: #c4b5fd;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; }
+  h1 { margin: 0; font-size: 22px; }
+  header a { color: var(--accent); font-size: 14px; }
+  .demo { border: 2px dashed var(--demo); background: var(--card); border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .demo b { color: var(--demo); }
+  nav { display: flex; gap: 4px; margin: 16px 0 12px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  nav button { background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted);
+               padding: 8px 14px; font: inherit; font-size: 15px; cursor: pointer; white-space: nowrap; }
+  nav button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+  nav .n { font-size: 12px; background: var(--line); border-radius: 999px; padding: 0 7px; margin-left: 4px; color: var(--text); }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+  select, button { font: inherit; font-size: 14px; color: var(--text); background: var(--card);
+                   border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  .students { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+  .stu { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 130px; padding: 12px 16px;
+         border-radius: 12px; border: 2px solid var(--line); background: var(--card); text-align: left; }
+  .stu b { font-size: 18px; } .stu small { color: var(--muted); font-size: 13px; }
+  .stu[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px var(--sel); }
+  .list { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .row { display: grid; grid-template-columns: 44px minmax(150px, 1fr) minmax(170px, 1.4fr) 80px 70px auto auto; gap: 10px; align-items: center;
+         padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row.playing .play { border-color: var(--accent); color: var(--accent); }
+  .play { width: 38px; height: 34px; padding: 0; }
+  .word b { font-family: ui-monospace, Consolas, monospace; font-size: 16px; }
+  .word span, .how { color: var(--muted); font-size: 13px; }
+  .score { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .score.zero { color: var(--err); }
+  .who { display: inline-block; border-radius: 999px; padding: 1px 10px; font-size: 13px; font-weight: 600; background: #dbeafe; color: #1e40af; white-space: nowrap; }
+  .who.乙 { background: #fde68a; color: #92400e; }
+  .labels, .actions { display: flex; gap: 4px; flex-wrap: wrap; }
+  .labels button, .actions button { padding: 4px 8px; white-space: nowrap; }
+  .labels button[aria-pressed="true"][data-l="correct"] { border: 2px solid var(--great); color: var(--great); font-weight: 600; }
+  .labels button[aria-pressed="true"][data-l="wrong"] { border: 2px solid var(--err); color: var(--err); font-weight: 600; }
+  .labels button[aria-pressed="true"][data-l="invalid"] { border: 2px solid var(--silent); font-weight: 600; }
+  .empty { padding: 50px 0; text-align: center; color: var(--muted); }
+  @media (max-width: 760px) {
+    .row { grid-template-columns: 40px 1fr 56px; }
+    .row .how, .row .labels, .row .actions { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>凱比錄音管理</h1>
+    <a href="viz.html">← 波形比對（展示版）</a>
+    <a href="../#ai">← 回凱比開發進度</a>
+  </header>
+
+  <div class="demo">🧪 <b>展示版</b>：實際頁面列出學生在凱比上的每一段練習錄音；這裡的 33 段都是用<b>官方辭典錄音</b>變速模擬的，
+    「學生甲、乙」也是假的。標記、刪除、復原都可以試，<b>只在你的瀏覽器裡，重新整理就還原</b>。</div>
+
+  <nav role="tablist" id="tabs">
+    <button data-tab="all" aria-selected="true">所有錄音<span class="n" id="n-all"></span></button>
+    <button data-tab="students" aria-selected="false">學生<span class="n">2</span></button>
+    <button data-tab="zero" aria-selected="false">百分之零的錄音<span class="n" id="n-zero"></span></button>
+    <button data-tab="correct" aria-selected="false">老師判斷對的錄音<span class="n" id="n-correct"></span></button>
+    <button data-tab="wrong" aria-selected="false">老師判斷錯的錄音<span class="n" id="n-wrong"></span></button>
+    <button data-tab="trash" aria-selected="false">已刪除（可復原）<span class="n" id="n-trash"></span></button>
+  </nav>
+
+  <div class="students" id="students" hidden></div>
+  <div class="bar">
+    <label>詞：<select id="word"><option value="">全部</option></select></label>
+    <span id="count"></span>
+  </div>
+  <div class="list" id="list"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pct = x => x == null ? '—' : Math.round(x * 100) + '%';
+let items = [], tab = 'all', student = null, rows = [], audio = null, playing = null;
+
+function filtered() {
+  const live = items.filter(r => !r.deleted);
+  let list = tab === 'trash' ? items.filter(r => r.deleted)
+    : tab === 'zero' ? live.filter(r => r.score === 0)
+    : tab === 'correct' ? live.filter(r => r.label === 'correct')
+    : tab === 'wrong' ? live.filter(r => r.label === 'wrong')
+    : tab === 'students' ? (student ? live.filter(r => r.speaker === student) : []) : live;
+  const w = $('word').value;
+  return w ? list.filter(r => r.word === w) : list;
+}
+
+function render() {
+  const live = items.filter(r => !r.deleted);
+  $('n-all').textContent = live.length;
+  $('n-zero').textContent = live.filter(r => r.score === 0).length;
+  $('n-correct').textContent = live.filter(r => r.label === 'correct').length;
+  $('n-wrong').textContent = live.filter(r => r.label === 'wrong').length;
+  $('n-trash').textContent = items.filter(r => r.deleted).length;
+  const sb = $('students');
+  sb.hidden = tab !== 'students';
+  sb.innerHTML = ['甲', '乙'].map(s => {
+    const mine = live.filter(r => r.speaker === s);
+    return `<button class="stu" data-s="${s}" aria-pressed="${student === s}"><span class="who ${s}">${s}</span>
+      <b>模擬學生${s}</b><small>${mine.length} 段錄音｜✅${mine.filter(r => r.label === 'correct').length} ❌${mine.filter(r => r.label === 'wrong').length}</small></button>`;
+  }).join('');
+  sb.querySelectorAll('.stu').forEach(b => b.onclick = () => { student = b.dataset.s; render(); });
+
+  rows = filtered();
+  if (tab === 'students' && !student) { $('list').innerHTML = '<div class="empty">👆 按上面的學生，就會列出他的錄音</div>'; $('count').textContent = ''; return; }
+  $('count').textContent = `共 ${rows.length} 段`;
+  if (!rows.length) { $('list').innerHTML = '<div class="empty">這裡沒有錄音</div>'; return; }
+  $('list').innerHTML = rows.map((r, i) => `
+    <div class="row ${playing === r.id ? 'playing' : ''}" data-i="${i}">
+      <button class="play" data-act="play" title="播放">▶</button>
+      <span class="word"><b>${esc(r.word)}</b><span>${esc(r.meaning)}</span></span>
+      <span class="how">${esc(r.how.replace('模擬：', ''))}${r.source_word !== r.word ? `（其實念 ${esc(r.source_word)}）` : ''}</span>
+      <span><span class="who ${esc(r.speaker)}">學生${esc(r.speaker)}</span></span>
+      <span class="score ${r.score === 0 ? 'zero' : ''}">${pct(r.score)}</span>
+      ${tab === 'trash' ? `<span></span><span class="actions"><button data-act="restore">↩ 復原</button>
+        <button data-act="purge">✖ 永久刪除</button></span>` : `
+      <span class="labels">
+        <button data-act="label" data-l="correct" aria-pressed="${r.label === 'correct'}">✅ 對</button>
+        <button data-act="label" data-l="wrong" aria-pressed="${r.label === 'wrong'}">❌ 錯</button>
+        <button data-act="label" data-l="invalid" aria-pressed="${r.label === 'invalid'}">🔇 不算</button>
+      </span>
+      <span class="actions"><button data-act="delete">🗑 刪除</button></span>`}
+    </div>`).join('');
+}
+
+function play(r) {
+  if (audio) audio.pause();
+  if (playing === r.id) { playing = null; render(); return; }
+  audio = new Audio(r.source_url);
+  audio.preservesPitch = audio.mozPreservesPitch = audio.webkitPreservesPitch = false;   // 速度和音高一起變
+  audio.defaultPlaybackRate = audio.playbackRate = r.rate;     // 載入時速度會被重設，兩個都要設
+  audio.onplay = () => { audio.playbackRate = r.rate; };
+  playing = r.id;
+  audio.onended = () => { playing = null; render(); };
+  audio.play().catch(() => alert('無法播放官方錄音（可能是網路或辭典網站暫時連不上）。'));
+  render();
+}
+
+$('list').addEventListener('click', e => {
+  const b = e.target.closest('button'); const row = e.target.closest('.row');
+  if (!b || !row) return;
+  const r = rows[+row.dataset.i];
+  if (b.dataset.act === 'play') play(r);
+  else if (b.dataset.act === 'label') { r.label = r.label === b.dataset.l ? '' : b.dataset.l; render(); }
+  else if (b.dataset.act === 'delete') { r.deleted = true; render(); }
+  else if (b.dataset.act === 'restore') { r.deleted = false; render(); }
+  else if (b.dataset.act === 'purge') {
+    if (confirm('展示版：實際頁面會永久刪除這段錄音（無法復原）。這裡只會從列表移除，重新整理就還原。')) {
+      items = items.filter(x => x !== r); render();
+    }
+  }
+});
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
+  tab = b.dataset.tab;
+  document.querySelectorAll('#tabs button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+  render();
+});
+$('word').onchange = render;
+
+fetch('demo-data.json').then(r => r.json()).then(d => {
+  items = d.items.map(i => ({ ...i, deleted: false }));
+  const words = [...new Set(items.map(i => i.word))];
+  $('word').innerHTML = '<option value="">全部</option>' + words.map(w => `<option>${esc(w)}</option>`).join('');
+  render();
+});
+</script>
+</body>
+</html>

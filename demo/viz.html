@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>發音波形比對（展示版）</title>
+<meta name="description" content="凱比卑南語發音比對的老師頁面展示版：用官方辭典錄音模擬學生，不含任何學生錄音。">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #e3e6ec;
+    --ref: #2563eb; --stu: #ea580c; --err: #dc2626; --err-band: rgba(220, 38, 38, .14);
+    --great: #1f9d55; --close: #ca8a04; --retry: #c2410c; --silent: #6b7280; --demo: #7c3aed;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11151c; --card: #19202a; --text: #e6e9ef; --muted: #9aa3b2; --line: #2a3340;
+      --ref: #60a5fa; --stu: #fb923c; --err: #f87171; --err-band: rgba(248, 113, 113, .18);
+      --great: #4ade80; --close: #facc15; --retry: #fb923c; --silent: #9ca3af; --demo: #c4b5fd;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #11151c; --card: #19202a; --text: #e6e9ef; --muted: #9aa3b2; --line: #2a3340;
+    --ref: #60a5fa; --stu: #fb923c; --err: #f87171; --err-band: rgba(248, 113, 113, .18);
+    --great: #4ade80; --close: #facc15; --retry: #fb923c; --silent: #9ca3af; --demo: #c4b5fd;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; }
+  h1 { margin: 0; font-size: 22px; }
+  header a { color: var(--ref); font-size: 14px; }
+  .demo { border: 2px dashed var(--demo); color: var(--text); background: var(--card); border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .demo b { color: var(--demo); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-top: 14px; }
+  h2 { font-size: 16px; margin: 0 0 6px; }
+  .hint { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+  .pick { display: flex; flex-wrap: wrap; gap: 6px; }
+  button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text);
+           border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+  button:hover { border-color: var(--ref); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .pick button[aria-pressed="true"] { border: 2px solid var(--ref); font-weight: 600; }
+  .pick .mono { font-family: ui-monospace, Consolas, monospace; }
+  .now { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; }
+  .word { font-family: ui-monospace, Consolas, monospace; font-size: 40px; font-weight: 700; }
+  .meaning { font-size: 20px; color: var(--muted); }
+  .score { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .badge { border-radius: 6px; padding: 2px 10px; font-size: 14px; font-weight: 600; color: #fff; }
+  .great { background: var(--great); } .close { background: var(--close); } .retry { background: var(--retry); } .silent { background: var(--silent); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge { color: #11151c; } }
+  :root[data-theme="dark"] .badge { color: #11151c; }
+  .facts { color: var(--muted); font-size: 14px; }
+  canvas { width: 100%; height: 220px; display: block; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; margin-top: 6px; color: var(--muted); }
+  .sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .letters { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+  .lt { display: flex; flex-direction: column; align-items: center; min-width: 44px; padding: 6px 8px 4px;
+        border-radius: 8px; border: 2px solid; font-family: ui-monospace, Consolas, monospace; }
+  .lt b { font-size: 26px; line-height: 1.1; }
+  .lt small { font-size: 12px; color: var(--muted); min-height: 16px; }
+  .lt.ok { border-color: var(--great); } .lt.ok b { color: var(--great); }
+  .lt.wrong { border-color: var(--err); background: var(--err-band); } .lt.wrong b { color: var(--err); }
+  .lt.missing { border-color: var(--silent); border-style: dashed; } .lt.missing b { color: var(--silent); }
+  .lt.extra { border-color: var(--line); border-style: dotted; opacity: .7; }
+  .lb[aria-pressed="true"][data-label="correct"] { border: 2px solid var(--great); }
+  .lb[aria-pressed="true"][data-label="wrong"] { border: 2px solid var(--err); }
+  .lb[aria-pressed="true"][data-label="invalid"] { border: 2px solid var(--silent); }
+  .table { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+  th:nth-child(-n+2), td:nth-child(-n+2) { text-align: left; }
+  th { color: var(--muted); font-weight: 600; }
+  td.w button { font-family: ui-monospace, Consolas, monospace; font-weight: 600; color: var(--ref); background: none; border-color: transparent; padding: 2px 6px; margin-left: -7px; }
+  .bar { display: inline-block; height: 8px; border-radius: 4px; background: var(--great); vertical-align: middle; margin-left: 6px; }
+  .warn { color: var(--err); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>凱比發音波形比對</h1>
+    <a href="recordings.html">🎧 錄音管理（展示版）→</a>
+    <a href="../#ai">← 回凱比開發進度</a>
+  </header>
+
+  <div class="demo">🧪 <b>展示版</b>：這是老師在筆電上用的頁面，所有聲音都是用<b>原住民族語言線上辭典的官方錄音</b>變速模擬的「學生」，<b>不含任何學生錄音</b>。
+    分數、波形、易錯部分和逐音比對，都是凱比大腦對這些模擬聲音實際算出來的結果。標記按鈕可以按，但不會存檔。</div>
+
+  <div class="card">
+    <div class="btns" style="margin-bottom:8px">
+      <button disabled title="展示版不能控制凱比">▶ 開啟凱比 App</button>
+      <button disabled>⏸ 停止這個詞</button><button disabled>🔁 重教這個詞</button><button disabled>⏭ 下一個詞</button>
+      <button disabled>🔉 音量 −</button><button disabled>🔊 音量 ＋</button>
+      <span class="hint" style="margin:0">（實際頁面可以從筆電控制凱比；展示版停用）</span>
+    </div>
+    <h2>選一個詞</h2>
+    <div class="pick" id="words"></div>
+    <h2 style="margin-top:12px">選一段模擬錄音</h2>
+    <div class="pick" id="variants"></div>
+  </div>
+
+  <div class="card now">
+    <span class="word" id="word"></span>
+    <span class="meaning" id="meaning"></span>
+    <span class="score" id="score"></span>
+    <span class="badge" id="level"></span>
+    <span class="facts" id="facts"></span>
+  </div>
+
+  <div class="card">
+    <h2>老師判斷：這次念得對嗎？ <span class="hint">（實際頁面會存下來，用來訓練 AI 自己判斷）</span></h2>
+    <div class="btns">
+      <button class="lb" data-label="correct">✅ 念對</button>
+      <button class="lb" data-label="wrong">❌ 念錯</button>
+      <button class="lb" data-label="invalid">🔇 不算（雜音／沒念）</button>
+    </div>
+    <p class="facts" id="labelMsg"></p>
+  </div>
+
+  <div class="card">
+    <h2>逐音比對 <span class="hint">（實驗中，還不影響過關）</span></h2>
+    <p class="hint">把拼音轉成音標，和 AI 聽到的音一個一個對照：綠＝念對、紅＝念成別的音、灰＝沒聽到。</p>
+    <div class="letters" id="letters"></div>
+    <p class="facts" id="phFacts"></p>
+  </div>
+
+  <div class="card">
+    <h2>① 原始時間疊合</h2>
+    <p class="hint">照實際秒數疊在一起：看得出念得比示範快還是慢。</p>
+    <canvas id="raw"></canvas>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--ref)"></span>示範（官方辭典）</span>
+      <span><span class="sw" style="background:var(--stu)"></span>模擬學生的聲音</span>
+      <span><span class="sw" style="background:var(--err)"></span>易錯的部分</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>② 對齊後疊合</h2>
+    <p class="hint">把學生的聲音依發音位置對齊到示範的時間軸（DTW）：形狀越重疊越像；紅色是和示範差異明顯偏大的地方。</p>
+    <canvas id="aligned"></canvas>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--ref)"></span>示範</span>
+      <span><span class="sw" style="background:var(--stu)"></span>學生（對齊後）</span>
+      <span><span class="sw" style="background:var(--err)"></span>易錯的部分</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="btns">
+      <button id="playRef">▶ 播放示範</button>
+      <button id="playStu">▶ 播放模擬學生的聲音</button>
+      <span class="hint" style="margin:0">（播放官方辭典錄音；模擬學生＝同一段官方錄音用不同速度播放）</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>各詞練習統計（展示資料）</h2>
+    <p class="hint" id="statsHint"></p>
+    <div class="table"><table id="stats"></table></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pct = x => x == null ? '—' : Math.round(x * 100) + '%';
+const LEVEL = { great: '很接近', close: '差一點點', retry: '再試一次', silent: '沒聽到' };
+const LABEL_NAME = { correct: '✅ 念對', wrong: '❌ 念錯', invalid: '🔇 不算' };
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let data, current, audio;
+const labels = {};               // 展示版：只存在這個頁面，重新整理就還原
+
+function setupCanvas(c) {
+  const dpr = devicePixelRatio || 1, w = c.clientWidth, h = c.clientHeight;
+  c.width = w * dpr; c.height = h * dpr;
+  const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+  return { g, w, h };
+}
+function drawWave(g, env, x0, x1, mid, amp, color, alpha) {
+  const n = env.max.length; if (!n) return;
+  g.fillStyle = color; g.globalAlpha = alpha; g.beginPath();
+  for (let i = 0; i < n; i++) g.lineTo(x0 + (x1 - x0) * i / (n - 1 || 1), mid - env.max[i] * amp);
+  for (let i = n - 1; i >= 0; i--) g.lineTo(x0 + (x1 - x0) * i / (n - 1 || 1), mid - env.min[i] * amp);
+  g.closePath(); g.fill(); g.globalAlpha = 1;
+}
+function drawErrors(g, segs, toX, h) {
+  for (const [a, b] of segs || []) {
+    const x0 = toX(a), x1 = Math.max(toX(b), x0 + 2);
+    g.fillStyle = css('--err-band'); g.fillRect(x0, 4, x1 - x0, h - 34);
+    g.fillStyle = css('--err'); g.fillRect(x0, h - 30, x1 - x0, 5);
+  }
+}
+function axis(g, w, h, seconds, pad) {
+  g.strokeStyle = css('--line'); g.fillStyle = css('--muted'); g.lineWidth = 1; g.font = '12px system-ui'; g.textAlign = 'center';
+  g.beginPath(); g.moveTo(pad, h / 2 - 10); g.lineTo(w - pad, h / 2 - 10); g.stroke();
+  const step = seconds > 3 ? 1 : seconds > 1.5 ? 0.5 : 0.25;
+  for (let t = 0; t <= seconds + 1e-6; t += step) {
+    const x = pad + (w - 2 * pad) * t / seconds;
+    g.beginPath(); g.moveTo(x, h - 22); g.lineTo(x, h - 16); g.stroke();
+    g.fillText(t.toFixed(t % 1 ? 2 : 0) + ' 秒', x, h - 4);
+  }
+}
+
+function pickWord(word) {
+  const vs = data.items.filter(i => i.word === word);
+  $('variants').innerHTML = vs.map(i => `<button data-id="${i.id}">${esc(i.how)}　${pct(i.score)}</button>`).join('');
+  $('variants').querySelectorAll('button').forEach(b => b.onclick = () => show(+b.dataset.id));
+  show(vs[0].id);
+}
+
+function show(id) {
+  const d = current = data.items.find(i => i.id === id);
+  document.querySelectorAll('#words button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.w === d.word)));
+  document.querySelectorAll('#variants button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.id === id)));
+  $('word').textContent = d.word; $('meaning').textContent = d.meaning;
+  $('score').textContent = '相似度 ' + pct(d.score);
+  const lv = $('level'); lv.textContent = LEVEL[d.level] || d.level; lv.className = 'badge ' + d.level;
+  const errSec = d.errors.reduce((a, [s, e]) => a + e - s, 0);
+  $('facts').textContent = `${d.how}｜示範 ${d.ref_sec} 秒、學生 ${d.student_sec} 秒｜易錯 ${d.errors.length} 處（共 ${errSec.toFixed(2)} 秒）` +
+    (d.source_word !== d.word ? `｜其實念的是 ${d.source_word}` : '') + (d.closest && d.closest !== d.word ? `｜AI 覺得最像 ${d.closest}` : '');
+  // 標記
+  const lab = labels[id] ?? d.label;
+  document.querySelectorAll('.lb').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.label === lab)));
+  const misjudged = d.source_word !== d.word && d.score >= data.pass;
+  $('labelMsg').innerHTML = `示範標記：${LABEL_NAME[lab] || '還沒標記'}` +
+    (misjudged ? `　<span class="warn">⚠ AI 給了 ${pct(d.score)}（過關），但其實念成 ${esc(d.source_word)}——這種情況就需要老師的標記來訓練 AI。</span>` : '');
+  // 逐音
+  const ph = d.phoneme;
+  $('letters').innerHTML = ph.letters.map(s => {
+    const label = s.status === 'extra' ? '+' : s.letters;
+    const note = s.status === 'ok' ? '' : s.status === 'missing' ? '沒聽到' : s.status === 'extra' ? '多了 ' + s.heard : '聽成 ' + s.heard;
+    return `<span class="lt ${esc(s.status)}"><b>${esc(label)}</b><small>${esc(note)}</small></span>`;
+  }).join('');
+  $('phFacts').textContent = `逐音正確度 ${pct(ph.score)}（和官方錄音比）｜應為 /${ph.expected}/｜AI 聽到 /${ph.heard}/`;
+  // 波形
+  const pad = 16;
+  let { g, w, h } = setupCanvas($('raw'));
+  const total = Math.max(d.ref_sec, d.student_sec, 0.5), mid = h / 2 - 10, amp = h / 2 - 30;
+  const X = s => pad + (w - 2 * pad) * s / total;
+  axis(g, w, h, total, pad); drawErrors(g, d.errors, X, h);
+  drawWave(g, d.ref, X(0), X(d.ref_sec), mid, amp, css('--ref'), .55);
+  drawWave(g, d.student, X(0), X(d.student_sec), mid, amp, css('--stu'), .55);
+  ({ g, w, h } = setupCanvas($('aligned')));
+  axis(g, w, h, d.ref_sec, pad); drawErrors(g, d.errors, s => pad + (w - 2 * pad) * s / d.ref_sec, h);
+  drawWave(g, d.ref, pad, w - pad, mid, amp, css('--ref'), .55);
+  drawWave(g, d.aligned, pad, w - pad, mid, amp, css('--stu'), .55);
+}
+
+function play(url, rate) {
+  if (audio) audio.pause();
+  audio = new Audio(url);
+  audio.preservesPitch = audio.mozPreservesPitch = audio.webkitPreservesPitch = false;   // 速度和音高一起變＝模擬不同的人
+  // 瀏覽器載入音檔時會把速度重設成 defaultPlaybackRate，所以兩個都要設，開始播放時再設一次
+  audio.defaultPlaybackRate = audio.playbackRate = rate || 1;
+  audio.onplay = () => { audio.playbackRate = rate || 1; };
+  audio.play().catch(() => alert('無法播放官方錄音（可能是網路或辭典網站暫時連不上）。'));
+}
+$('playRef').onclick = () => current && play(current.ref_url, 1);
+$('playStu').onclick = () => current && play(current.source_url, current.rate);
+document.querySelectorAll('.lb').forEach(b => b.onclick = () => { if (current) { labels[current.id] = b.dataset.label; show(current.id); } });
+
+function stats() {
+  const words = [...new Set(data.items.map(i => i.word))];
+  $('statsHint').textContent = `每個詞 3 段模擬錄音。達標＝相似度 ${pct(data.pass)} 以上。點詞語可以看那個詞。`;
+  $('stats').innerHTML = '<tr><th>詞</th><th>意思</th><th>次數</th><th>平均相似度</th><th>最高</th><th>達標率</th></tr>' +
+    words.map(w => {
+      const s = data.items.filter(i => i.word === w).map(i => i.score);
+      const avg = s.reduce((a, b) => a + b, 0) / s.length;
+      return `<tr><td class="w"><button data-w="${esc(w)}">${esc(w)}</button></td><td>${esc(data.items.find(i => i.word === w).meaning)}</td><td>${s.length}</td>
+        <td>${pct(avg)}<span class="bar" style="width:${Math.round(avg * 60)}px"></span></td><td>${pct(Math.max(...s))}</td>
+        <td>${pct(s.filter(x => x >= data.pass).length / s.length)}</td></tr>`;
+    }).join('');
+  $('stats').querySelectorAll('button').forEach(b => b.onclick = () => { pickWord(b.dataset.w); scrollTo({ top: 0, behavior: 'smooth' }); });
+}
+
+fetch('demo-data.json').then(r => r.json()).then(d => {
+  data = d;
+  const words = [...new Set(d.items.map(i => i.word))];
+  $('words').innerHTML = words.map(w => `<button class="mono" data-w="${esc(w)}">${esc(w)}</button>`).join('');
+  $('words').querySelectorAll('button').forEach(b => b.onclick = () => pickWord(b.dataset.w));
+  stats();
+  pickWord(words[0]);
+});
+addEventListener('resize', () => current && show(current.id));
+</script>
+</body>
+</html>

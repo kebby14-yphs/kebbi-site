@@ -94,6 +94,10 @@
   article pre code { background: none; padding: 0; }
   a { color: var(--accent); }
   .muted { color: var(--muted); font-size: 14px; }
+  .demo-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 12px; }
+  a.demo-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--text); border: 2px dashed var(--accent); }
+  a.demo-link:hover { background: var(--bg); }
+  a.demo-link strong { color: var(--accent); }
   .search { position: relative; margin-top: 20px; }
   .search input { width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 40px 10px 14px; }
   .search input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
@@ -289,10 +293,14 @@ async function loadAI() {
     const log = (a.log || []).map(l => `
       <div class="commit"><time>${esc(l.date)}</time><span>${esc(l.text)}</span><small class="muted">${esc(l.author)}</small></div>`).join('');
     const next = (a.next || []).map(n => `<li>${esc(n)}</li>`).join('');
+    // 老師頁面展示版（只用官方辭典錄音模擬，不含學生錄音）；網址只接受站內相對路徑
+    const demos = (a.demos || []).filter(d => /^demo\/[\w.-]+\.html$/.test(d.url)).map(d => `
+      <a class="card demo-link" href="${esc(d.url)}"><strong>🧪 ${esc(d.title)} →</strong><span class="muted">${esc(d.detail)}</span></a>`).join('');
     box.innerHTML = `
       <div class="card"><p style="margin:0">${esc(a.summary)}</p>
         <p class="muted" style="margin:8px 0 0">運作方式：</p><ol class="next">${flow}</ol>
         <p class="muted" style="margin:8px 0 0">最後更新 ${esc(a.updated)}</p></div>
+      ${demos ? `<h2>試試看老師頁面 <small class="muted">（展示版：用官方辭典錄音模擬學生，不含任何學生錄音）</small></h2><div class="demo-links">${demos}</div>` : ''}
       <h2>功能進度</h2>${parts}
       ${next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : ''}
       <h2>開發紀錄</h2><div class="card">${log}</div>`;
