@@ -155,6 +155,7 @@
     <button role="tab" data-tab="files" aria-selected="false">原始檔</button>
     <button role="tab" data-tab="commits" aria-selected="false">更新紀錄</button>
     <button role="tab" data-tab="vocabulary" aria-selected="false">卑南語辭典</button>
+    <button role="tab" data-tab="speech" aria-selected="false">接待講稿</button>
   </nav>
 
   <section id="status"></section>
@@ -223,6 +224,19 @@
     </div>
     <div id="vocab-list"></div>
     <p class="muted vocab-source">詞彙取自《原住民族語言線上辭典》卑南語 2025 年 11 月更新版；錄音由官方辭典串流（南王卑南語）。<a href="https://e-dictionary.ilrdf.org.tw/singleSearch?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&amp;tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E" target="_blank" rel="noopener">查看並收聽官方辭典</a> · <a href="https://e-dictionary.ilrdf.org.tw/textDownload?tribeId=2b339669-0e2f-4466-a9ab-5ff94ada152c&amp;tribeName=%E5%8D%91%E5%8D%97%E8%AA%9E" target="_blank" rel="noopener">下載辭典全文</a></p>
+  </section>
+  <section id="speech" hidden>
+    <div class="card">
+      <h2 style="margin-top:0">日本接待講稿室</h2>
+      <p>組員一起寫接待日本朋友介紹稿的聊天室。先選比賽、再選身份，就能隨時發訊息、問 AI；AI 只讀所選比賽的比賽專區內容與比賽日期之前的網站資料（進度、筆記、卑南語詞彙），可以幫忙起草、改成簡單英文、檢查事實。</p>
+      <ul>
+        <li>大家都看得到彼此的訊息和 AI 的回答；點組員名字可以只看那個人的對話，方便追進度。</li>
+        <li>預設寫作要求：用最簡單的英文、不用專業詞彙，一行英文一行中文（組長可在頁面上修改）。</li>
+        <li>需要用 claude.ai 帳號登入，並由組長在分享選單把組員加為「Contributor（可參與）」才能儲存。</li>
+      </ul>
+      <p><a href="https://claude.ai/artifact/DSizH65rz5c7kCkX2MND7d" target="_blank" rel="noopener">開啟接待講稿室 ↗</a></p>
+      <p class="muted">AI 讀到的是 2026-11-06（v1.26）的網站資料快照；網站有大更新後，請 Claude 重新發布講稿室。</p>
+    </div>
   </section>
   <section id="commits" hidden>
     <p class="muted">每一次修改網站資料都會留下一筆紀錄（來自 GitHub）。</p>
@@ -690,7 +704,7 @@ function runSearch(q) {
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
   else if (h.startsWith('contest=')) openContest(contests.findIndex(c => c._file === h.slice(8)));
-  else if (['status', 'ai', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary'].includes(h)) showTab(h);
+  else if (['status', 'ai', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary', 'speech'].includes(h)) showTab(h);
   else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
 })();
 </script>
