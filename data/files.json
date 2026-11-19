@@ -26,7 +26,16 @@
                 "path": "competition/開場動畫日文版/日文台詞.txt",
                 "tool": "文字",
                 "kb": 2
-            }
+            },
+            { "name": "圖片/01.png（原第 1 頁：封面）", "path": "competition/開場動畫日文版/圖片/01.png", "tool": "圖片", "kb": 616 },
+            { "name": "圖片/02.png（原第 2 頁）", "path": "competition/開場動畫日文版/圖片/02.png", "tool": "圖片", "kb": 182 },
+            { "name": "圖片/03.png（原第 4 頁）", "path": "competition/開場動畫日文版/圖片/03.png", "tool": "圖片", "kb": 443 },
+            { "name": "圖片/04.png（原第 5 頁）", "path": "competition/開場動畫日文版/圖片/04.png", "tool": "圖片", "kb": 448 },
+            { "name": "圖片/05.png（原第 8 頁）", "path": "competition/開場動畫日文版/圖片/05.png", "tool": "圖片", "kb": 473 },
+            { "name": "圖片/06.png（原第 9 頁）", "path": "competition/開場動畫日文版/圖片/06.png", "tool": "圖片", "kb": 437 },
+            { "name": "圖片/07.png（原第 10 頁）", "path": "competition/開場動畫日文版/圖片/07.png", "tool": "圖片", "kb": 515 },
+            { "name": "圖片/08.png（原第 15 頁）", "path": "competition/開場動畫日文版/圖片/08.png", "tool": "圖片", "kb": 542 },
+            { "name": "圖片/09.png（原第 17 頁）", "path": "competition/開場動畫日文版/圖片/09.png", "tool": "圖片", "kb": 527 }
         ]
     },
     {
