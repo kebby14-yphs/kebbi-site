@@ -98,6 +98,28 @@
   a.demo-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--text); border: 2px dashed var(--accent); }
   a.demo-link:hover { background: var(--bg); }
   a.demo-link strong { color: var(--accent); }
+  /* ---- 跟著我走 ---- */
+  .fl-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; counter-reset: fl; }
+  .fl-flow li { counter-increment: fl; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; position: relative; }
+  .fl-flow li::before { content: counter(fl); position: absolute; top: -9px; left: 10px; background: var(--accent); color: var(--card); border-radius: 999px; font-size: 12px; font-weight: 700; padding: 0 7px; }
+  .fl-flow li strong { display: block; } .fl-flow li span { color: var(--muted); font-size: 13px; }
+  .fl-sim { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .fl-frame { position: relative; aspect-ratio: 4 / 3; background: repeating-linear-gradient(0deg, var(--bg), var(--bg) 23px, var(--line) 24px); border: 2px solid var(--line); border-radius: 10px; overflow: hidden; touch-action: none; cursor: ew-resize; }
+  .fl-person { position: absolute; top: 4%; bottom: 0; border: 3px solid var(--doing); background: color-mix(in srgb, var(--doing) 18%, transparent); border-radius: 8px 8px 0 0; display: flex; align-items: flex-start; justify-content: center; font-size: 28px; }
+  .fl-band { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--done) 12%, transparent); border-left: 1px dashed var(--done); border-right: 1px dashed var(--done); }
+  .fl-label { position: absolute; left: 6px; top: 4px; font-size: 12px; color: var(--muted); }
+  .fl-controls label { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 2px; }
+  .fl-controls input[type=range] { width: 100%; }
+  .fl-seg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fl-seg button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 8px; padding: 4px 12px; cursor: pointer; }
+  .fl-seg button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--card); font-weight: 600; }
+  .fl-out { margin-top: 12px; padding: 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); }
+  .fl-out .big { font-size: 20px; font-weight: 700; }
+  .fl-robot { width: 90px; height: 90px; display: block; margin: 6px auto 0; }
+  .fl-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .fl-table th, .fl-table td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  .fl-table th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+  @media (max-width: 640px) { .fl-sim { grid-template-columns: 1fr; } .fl-table { display: block; overflow-x: auto; } }
   .search { position: relative; margin-top: 20px; }
   .search input { width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 40px 10px 14px; }
   .search input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
@@ -149,6 +171,7 @@
   <nav role="tablist">
     <button role="tab" data-tab="status" aria-selected="true">目前進度</button>
     <button role="tab" data-tab="ai" aria-selected="false">本機 AI</button>
+    <button role="tab" data-tab="follow" aria-selected="false">跟著我走</button>
     <button role="tab" data-tab="contests" aria-selected="false">比賽專區</button>
     <button role="tab" data-tab="versions" aria-selected="false">版本紀錄</button>
     <button role="tab" data-tab="notes" aria-selected="false">分析筆記</button>
@@ -160,6 +183,7 @@
 
   <section id="status"></section>
   <section id="ai" hidden></section>
+  <section id="follow" hidden></section>
   <section id="contests" hidden>
     <div class="toolbar">
       <p class="muted">每場比賽一張卡片，點開看詳細內容與相關原始檔。</p>
@@ -325,6 +349,106 @@ async function loadAI() {
   } catch (e) {
     box.innerHTML = `<div class="card">無法載入本機 AI 紀錄（${esc(e.message)}）。</div>`;
   }
+}
+
+// ---------- 跟著我走 ----------
+async function loadFollow() {
+  const box = document.getElementById('follow');
+  try {
+    const f = await getJSON('data/follow.json');
+    const c = f.control;
+    const flow = (f.flow || []).map(s => `<li><strong>${esc(s.title)}</strong><span>${esc(s.detail)}</span></li>`).join('');
+    const stages = (f.stages || []).map(g => `
+      <div class="card goal"><span class="badge ${esc(g.status)}">${esc(STATUS_TEXT[g.status] || g.status)}</span>
+        <h3>${esc(g.title)}</h3><p>${esc(g.detail)}</p></div>`).join('');
+    const findings = (f.findings || []).map(x => `<tr><td>${esc(x.date)}</td><td><strong>${esc(x.problem)}</strong></td><td>${esc(x.cause)}</td><td>${esc(x.fix)}</td></tr>`).join('');
+    const settings = `<tr><th>距離</th>${c.distances.map(d => `<td><strong>${esc(d.name)}</strong>${d.approx ? '（' + esc(d.approx) + '）' : ''}<br><span class="muted">人寬 ${Math.round(d.width * 100)}% 以下就往前</span></td>`).join('')}</tr>
+      <tr><th>速度</th>${c.speeds.map(s => `<td><strong>${esc(s.name)}</strong><br><span class="muted">前進最高 ${s.move}、轉向最高 ${s.turn}</span></td>`).join('')}</tr>`;
+    const log = (f.log || []).map(l => `<div class="commit"><time>${esc(l.date)}</time><span>${esc(l.text)}</span><small class="muted">${esc(l.author)}</small></div>`).join('');
+    const next = (f.next || []).map(n => `<li>${esc(n)}</li>`).join('');
+    box.innerHTML = `
+      <div class="card goal"><span class="badge ${esc(f.status)}">${esc(STATUS_TEXT[f.status] || f.status)}</span>
+        <h3>凱比跟著我走</h3><p>${esc(f.summary)}</p><p>${esc(f.app)}</p><p class="muted">最後更新 ${esc(f.updated)}</p></div>
+      <h2>怎麼運作</h2><ol class="fl-flow">${flow}</ol>
+      <h2>試試看：凱比會怎麼動？ <small class="muted">（拖曳畫面裡的人，或調整遠近；計算方式和凱比 App 相同）</small></h2>
+      <div class="card fl-sim">
+        <div>
+          <div class="fl-frame" id="fl-frame"><span class="fl-label">凱比鏡頭看到的畫面</span>
+            <div class="fl-band" id="fl-band"></div><div class="fl-person" id="fl-person">🧍</div></div>
+          <p class="muted" style="margin:6px 0 0">綠色區域＝「正前方」：人在這裡面就不轉。</p>
+        </div>
+        <div class="fl-controls">
+          <label>人在左右哪裡</label><input type="range" id="fl-x" min="-100" max="100" value="-40">
+          <label>人有多寬（越寬＝越近）</label><input type="range" id="fl-w" min="10" max="95" value="25">
+          <label>跟隨距離</label><div class="fl-seg" id="fl-dist">${c.distances.map((d, i) => `<button data-i="${i}" aria-pressed="${i === 0}">${esc(d.name)}</button>`).join('')}</div>
+          <label>速度</label><div class="fl-seg" id="fl-speed">${c.speeds.map((s, i) => `<button data-i="${i}" aria-pressed="${i === 1}">${esc(s.name)}</button>`).join('')}</div>
+          <div class="fl-out" id="fl-out"></div>
+        </div>
+      </div>
+      <h2>測試進度</h2>${stages}
+      <h2>設定 <small class="muted">（凱比螢幕上可以選；${esc(c.note)}）</small></h2>
+      <div class="card"><table class="fl-table">${settings}</table></div>
+      <h2>安全設計</h2><div class="card"><ul>${(f.safety || []).map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>
+      <h2>測試發現的問題與修正</h2>
+      <div class="card"><table class="fl-table"><tr><th>日期</th><th>問題</th><th>原因</th><th>修正</th></tr>${findings}</table></div>
+      ${next ? `<h2>下一步</h2><div class="card"><ol class="next">${next}</ol></div>` : ''}
+      <h2>開發紀錄</h2><div class="card">${log}</div>`;
+    followSim(c);
+    SEARCH.follow = [
+      { where: 'follow', title: '凱比跟著我走', text: [f.summary, f.app, ...(f.flow || []).map(s => s.title + ' ' + s.detail)].join(' '), go: () => showTab('follow') },
+      ...(f.stages || []).map((g, n) => ({ where: 'follow', title: g.title, text: [STATUS_TEXT[g.status], g.detail].join(' '), go: () => focusCard('follow', '.goal', n + 1) })),
+      ...(f.findings || []).map((x, n) => ({ where: 'follow', title: x.problem, text: [x.date, x.cause, x.fix].join(' '), go: () => focusCard('follow', '.fl-table tr', c.distances ? n + 3 : n) })),
+      ...(f.safety || []).map(s => ({ where: 'follow', title: '安全設計', text: s, go: () => showTab('follow') }))];
+  } catch (e) {
+    box.innerHTML = `<div class="card">無法載入跟著我走的資料（${esc(e.message)}）。</div>`;
+  }
+}
+
+// 模擬器：和凱比跟著我 App 的 FollowMode 同一套公式
+function followSim(c) {
+  const st = { x: -0.4, w: 0.25, d: 0, s: 1 };
+  const $f = id => document.getElementById(id);
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  function update() {
+    const dist = c.distances[st.d], spd = c.speeds[st.s];
+    const person = $f('fl-person');
+    person.style.width = (st.w * 100) + '%';
+    person.style.left = clamp((st.x + 1) / 2 - st.w / 2, 0, 1 - st.w) * 100 + '%';
+    $f('fl-band').style.left = (0.5 - c.deadband / 2) * 100 + '%';
+    $f('fl-band').style.width = c.deadband * 100 + '%';
+    let turn = 0, move = 0;
+    if (Math.abs(st.x) > c.deadband) turn = clamp(-st.x * spd.turn * c.turn_gain, -spd.turn, spd.turn);
+    if (Math.abs(st.x) < c.forward_cx && st.w < dist.width) move = clamp((dist.width - st.w) / c.full_speed_gap * spd.move, c.min_move, spd.move);
+    const side = Math.abs(st.x) <= c.deadband ? '正前方' : st.x < 0 ? '凱比的左手邊' : '凱比的右手邊';
+    const far = st.w >= dist.width + 0.12 ? '很近' : st.w >= dist.width ? '剛好' : st.w >= dist.width - 0.12 ? '有點遠' : '很遠';
+    const act = turn && move ? '邊轉邊往前走' : turn ? (turn > 0 ? '往左轉' : '往右轉') : move ? '往前走' : '停著';
+    const why = move ? `人比設定的距離（寬 ${Math.round(dist.width * 100)}%）遠，往前追`
+      : st.w >= dist.width ? '人已經夠近，不前進' : Math.abs(st.x) >= c.forward_cx ? '人太偏一邊，先轉過去再走' : '';
+    // 機器人示意：箭頭方向＝轉向，長度＝前進速度
+    const ang = -turn / spd.turn * 60, len = 18 + (move / 0.2) * 22;
+    $f('fl-out').innerHTML = `<div class="big">${act}</div>
+      <div class="muted">你在${side}，距離${far}${why ? '｜' + why : ''}</div>
+      <div>轉向 ${turn.toFixed(1)}　前進 ${move.toFixed(2)}</div>
+      <svg class="fl-robot" viewBox="-50 -50 100 100" aria-label="凱比移動示意">
+        <circle r="22" fill="none" stroke="currentColor" stroke-width="3"/>
+        <g transform="rotate(${ang})"><line x1="0" y1="0" x2="0" y2="${-len}" stroke="${move || turn ? 'var(--accent)' : 'var(--muted)'}" stroke-width="5" stroke-linecap="round"/>
+        <path d="M -7 ${-len + 6} L 0 ${-len - 4} L 7 ${-len + 6}" fill="none" stroke="${move || turn ? 'var(--accent)' : 'var(--muted)'}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+      </svg>`;
+  }
+  $f('fl-x').oninput = e => { st.x = e.target.value / 100; update(); };
+  $f('fl-w').oninput = e => { st.w = e.target.value / 100; update(); };
+  const seg = (id, key) => $f(id).querySelectorAll('button').forEach(b => b.onclick = () => {
+    st[key] = +b.dataset.i;
+    $f(id).querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    update();
+  });
+  seg('fl-dist', 'd'); seg('fl-speed', 's');
+  // 直接在畫面上拖曳人
+  const frame = $f('fl-frame');
+  const drag = e => { const r = frame.getBoundingClientRect(); st.x = clamp(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1); $f('fl-x').value = Math.round(st.x * 100); update(); };
+  frame.addEventListener('pointerdown', e => { frame.setPointerCapture(e.pointerId); drag(e); });
+  frame.addEventListener('pointermove', e => { if (e.buttons) drag(e); });
+  update();
 }
 
 async function loadVersions() {
@@ -665,7 +789,7 @@ function highlight(text, words) {
   words.forEach(w => { h = h.replace(new RegExp(esc(w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), m => '<mark>' + m + '</mark>'); });
   return h;
 }
-const SEARCH_ORDER = ['status', 'ai', 'contests', 'versions', 'notes', 'files', 'vocabulary'];
+const SEARCH_ORDER = ['status', 'ai', 'follow', 'contests', 'versions', 'notes', 'files', 'vocabulary'];
 function runSearch(q) {
   const box = document.getElementById('search-results');
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -700,11 +824,11 @@ function runSearch(q) {
 (async () => {
   try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
   catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
-  await Promise.all([loadAI(), loadContests(), loadVocabulary()]);
+  await Promise.all([loadAI(), loadFollow(), loadContests(), loadVocabulary()]);
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
   else if (h.startsWith('contest=')) openContest(contests.findIndex(c => c._file === h.slice(8)));
-  else if (['status', 'ai', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary', 'speech'].includes(h)) showTab(h);
+  else if (['status', 'ai', 'follow', 'contests', 'versions', 'notes', 'files', 'commits', 'vocabulary', 'speech'].includes(h)) showTab(h);
   else { let t = null; try { t = localStorage.getItem('kebbi-tab'); } catch (e) {} if (t) showTab(t); }
 })();
 </script>
