@@ -153,6 +153,21 @@
   .vocab-audio-status:empty { display: none; }
   .vocab-source { margin-top: 14px; }
   @media (max-width: 560px) { .vocab-controls { grid-template-columns: 1fr; } }
+  /* ---- 日本交流資料（接待講稿分頁下方） ---- */
+  .jp-divider { margin: 32px 0 4px; padding-top: 20px; border-top: 2px solid var(--line); }
+  .jp-divider h2 { margin: 0; font-size: 20px; }
+  .jp-video { width: 100%; max-width: 760px; display: block; border-radius: 8px; background: #000; }
+  .jp-terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 4px 16px; margin: 0; font-size: 14px; }
+  .jp-terms div { display: flex; gap: 8px; } .jp-terms dt { color: var(--muted); } .jp-terms dd { margin: 0; }
+  .jp-row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .jp-row img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  .jp-row .num { font-size: 13px; color: var(--muted); margin: 4px 0 0; text-align: center; }
+  .jp-row dl { margin: 0; display: grid; gap: 6px; font-size: 14px; }
+  .jp-row dt { font-size: 12px; color: var(--muted); }
+  .jp-row dd { margin: 0; }
+  .jp-row dd[lang="ja"] { font-family: "Yu Gothic", "Hiragino Sans", "Noto Sans JP", sans-serif; }
+  .jp-row .short { font-weight: 700; color: var(--accent); }
+  @media (max-width: 560px) { .jp-row { grid-template-columns: 1fr; } .jp-row img { max-width: 320px; } }
 </style>
 </head>
 <body>
@@ -261,6 +276,8 @@
       <p><a href="https://claude.ai/artifact/DSizH65rz5c7kCkX2MND7d" target="_blank" rel="noopener">開啟接待講稿室 ↗</a></p>
       <p class="muted">AI 讀到的是 2026-11-06（v1.26）的網站資料快照；網站有大更新後，請 Claude 重新發布講稿室。</p>
     </div>
+    <div class="jp-divider"><h2>日本交流資料</h2></div>
+    <div id="japan"><p class="muted">載入中…</p></div>
   </section>
   <section id="commits" hidden>
     <p class="muted">每一次修改網站資料都會留下一筆紀錄（來自 GitHub）。</p>
@@ -503,6 +520,49 @@ async function loadFiles() {
         <span class="muted">${esc(f.tool || '')}</span>
         <span class="muted size">${Number(f.kb).toLocaleString()} KB</span>
       </div>`).join('')}</div>`).join('');
+}
+
+// ---- 日本交流資料（接待講稿分頁下方，和聊天室分開） ----
+async function loadJapan() {
+  const box = document.getElementById('japan');
+  try {
+    const j = await getJSON('data/japan.json');
+    const v = j.video || {};
+    const dirLink = p => `https://github.com/${PRIVATE_REPO}/tree/main/` + p.split('/').map(encodeURIComponent).join('/');
+    const rows = (j.narration || []).map((r, n) => `
+      <div class="card jp-row">
+        <div><a href="${esc(r.image)}" target="_blank" rel="noopener"><img src="${esc(r.image)}" alt="第 ${n + 1} 段畫面" loading="lazy"></a>
+          <p class="num">第 ${n + 1} 段・原簡報第 ${esc(r.page)} 頁</p></div>
+        <dl>
+          <div><dt>中文原文（凱比旁白）</dt><dd>${esc(r.zh)}</dd></div>
+          <div><dt>日文完整版（現場介紹可以唸這段）</dt><dd lang="ja">${esc(r.ja)}</dd></div>
+          <div><dt>日文短句（影片配音＋字幕）</dt><dd lang="ja" class="short">${esc(r.short)}</dd></div>
+        </dl>
+      </div>`).join('');
+    box.innerHTML = `
+      <p class="muted" style="margin-top:6px">${esc(j.intro)}（最後更新 ${esc(j.updated)}）</p>
+      <h2>${esc(v.title)}</h2>
+      <div class="card">
+        <video class="jp-video" controls preload="metadata" ${v.poster ? `poster="${esc(v.poster)}"` : ''} src="${esc(v.src)}"></video>
+        <p class="muted" style="margin:8px 0 0">${esc(v.detail)}　<a href="${esc(v.src)}" target="_blank" rel="noopener">另開影片</a>${v.note ? `　·　<a href="#note=${esc(v.note)}">製作過程筆記</a>` : ''}</p>
+      </div>
+      <h2>旁白對照 <small class="muted">（${(j.narration || []).length} 段，點圖片看大圖）</small></h2>
+      ${rows}
+      <h2>用語對照</h2>
+      <div class="card"><dl class="jp-terms">${(j.terms || []).map(t => `<div><dt>${esc(t[0])}</dt><dd lang="ja">${esc(t[1])}</dd></div>`).join('')}</dl></div>
+      <h2>檔案 <small class="muted">（私人儲存庫 kebbi-dev，需登入 GitHub）</small></h2>
+      <div class="card">${(j.files || []).map(f => `
+        <div class="file"><a href="${esc(f.dir ? dirLink(f.path) : privateLink(f.path))}" target="_blank" rel="noopener">${esc(f.name)}</a>
+          <span class="muted">${esc(f.tool || '')}</span><span></span></div>`).join('')}</div>
+      ${(j.todo || []).length ? `<h2>待確認</h2><div class="card"><ul>${j.todo.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}`;
+    const note = box.querySelector('a[href^="#note="]');
+    if (note) note.addEventListener('click', e => { e.preventDefault(); openNote(v.note); });
+    SEARCH.speech = [
+      { where: 'speech', title: '日本交流資料：' + (v.title || ''), text: [j.intro, v.detail, ...(j.terms || []).flat()].join(' '), go: () => { showTab('speech'); document.querySelector('.jp-divider').scrollIntoView({ behavior: 'smooth' }); } },
+      ...(j.narration || []).map((r, n) => ({ where: 'speech', title: `日本交流旁白 第 ${n + 1} 段`, text: [r.zh, r.ja, r.short].join(' '), go: () => focusCard('speech', '.jp-row', n) }))];
+  } catch (e) {
+    box.innerHTML = `<div class="card">無法載入日本交流資料（${esc(e.message)}）。</div>`;
+  }
 }
 
 // ---- 卑南語生活詞彙 ----
@@ -824,7 +884,7 @@ function runSearch(q) {
 (async () => {
   try { await Promise.all([loadStatus(), loadVersions(), loadNotes(), loadFiles()]); }
   catch (e) { document.getElementById('status').innerHTML = `<div class="card">資料載入失敗：${esc(e.message)}</div>`; }
-  await Promise.all([loadAI(), loadFollow(), loadContests(), loadVocabulary()]);
+  await Promise.all([loadAI(), loadFollow(), loadContests(), loadVocabulary(), loadJapan()]);
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith('note=')) openNote(h.slice(5));
   else if (h.startsWith('contest=')) openContest(contests.findIndex(c => c._file === h.slice(8)));

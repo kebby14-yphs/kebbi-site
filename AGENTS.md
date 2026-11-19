@@ -15,6 +15,7 @@
 | 更新某個目標的狀態 | `data/status.json` 的 `goals`，並更新 `updated` 日期 |
 | 更新「下一步」清單 | `data/status.json` 的 `next` |
 | 跟著我走（凱比跟著我 App）進度 | `data/follow.json`：`stages` 狀態、`findings` 加測試發現、`log` **最前面**加一筆、`next`、`updated`；`control` 的數值要和 App 程式（FollowMode.java）一致，網頁模擬器會用 |
+| 日本交流資料（接待講稿分頁下方，和聊天室分開） | `data/japan.json`：影片、旁白對照（中文／日文完整版／日文短句）、用語對照、檔案、待確認；顯示用的圖片和影片放 `docs/`，原始檔放 kebbi-dev |
 | 本機 AI 開發進度 | `data/ai.json`：`components` 的狀態、`log` **最前面**加一筆、`next`，並更新 `updated` |
 | 記錄一個新版本 | 在 `data/versions.json` **最前面**加一筆 |
 | 新增分析筆記 | 在 `notes/` 加 `YYYY-MM-DD-主題.md`，並在 `notes/index.json` **最前面**加一筆 |
