@@ -1,5 +1,29 @@
 [
     {
+        "folder": "開場動畫日文版",
+        "title": "機智卑南開場動畫日文版（11/18）",
+        "files": [
+            {
+                "name": "機智卑南_開場動畫_日文字幕.mp4（日文配音＋字幕，約 45 秒）",
+                "path": "competition/開場動畫日文版/機智卑南_開場動畫_日文字幕.mp4",
+                "tool": "影片",
+                "kb": 24015
+            },
+            {
+                "name": "機智卑南_開場動畫_旁白對照表.docx（中文／日文旁白對照）",
+                "path": "competition/開場動畫日文版/機智卑南_開場動畫_旁白對照表.docx",
+                "tool": "Word",
+                "kb": 4196
+            },
+            {
+                "name": "日文台詞.txt",
+                "path": "competition/開場動畫日文版/日文台詞.txt",
+                "tool": "文字",
+                "kb": 2
+            }
+        ]
+    },
+    {
         "folder": "kebbi-brain",
         "title": "凱比本機 AI 大腦（11/06）",
         "files": [
