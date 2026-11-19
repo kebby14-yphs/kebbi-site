@@ -553,10 +553,11 @@ async function loadJapan() {
       ${rows}
       <h2>用語對照</h2>
       <div class="card"><dl class="jp-terms">${(j.terms || []).map(t => `<div><dt>${esc(t[0])}</dt><dd lang="ja">${esc(t[1])}</dd></div>`).join('')}</dl></div>
-      <h2>檔案 <small class="muted">（私人儲存庫 kebbi-dev，需登入 GitHub）</small></h2>
+      <h2>檔案 <small class="muted">（點了直接開啟或下載，不用登入）</small></h2>
       <div class="card">${(j.files || []).map(f => `
-        <div class="file"><a href="${esc(f.dir ? dirLink(f.path) : privateLink(f.path))}" target="_blank" rel="noopener">${esc(f.name)}</a>
-          <span class="muted">${esc(f.tool || '')}</span><span></span></div>`).join('')}</div>
+        <div class="file"><a href="${esc(f.url || (f.dir ? dirLink(f.path) : privateLink(f.path)))}" target="_blank" rel="noopener">${esc(f.name)}</a>
+          <span class="muted">${esc(f.tool || '')}</span><span class="muted size">${f.kb ? Number(f.kb).toLocaleString() + ' KB' : ''}</span></div>`).join('')}</div>
+      <p class="muted">原始檔另外備份在私人儲存庫 kebbi-dev（「原始檔」分頁的連結要用有權限的 GitHub 帳號登入才打得開，沒登入會顯示 404）。</p>
       ${(j.todo || []).length ? `<h2>待確認</h2><div class="card"><ul>${j.todo.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}`;
     const note = box.querySelector('a[href^="#note="]');
     if (note) note.addEventListener('click', e => { e.preventDefault(); openNote(v.note); });

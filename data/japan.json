@@ -55,10 +55,10 @@
       "short": "さあ、ケビーと一緒にプユマ語に挑戦しよう！" }
   ],
   "files": [
-    { "name": "旁白對照表（Word，可列印）", "path": "competition/開場動畫日文版/機智卑南_開場動畫_旁白對照表.docx", "tool": "Word" },
-    { "name": "日文台詞（純文字）", "path": "competition/開場動畫日文版/日文台詞.txt", "tool": "文字" },
-    { "name": "9 張原圖（從開場動畫簡報拆出）", "path": "competition/開場動畫日文版/圖片", "tool": "資料夾", "dir": true },
-    { "name": "AI 動畫版影片（圖上中文字會變形，不建議使用）", "path": "competition/開場動畫日文版/機智卑南_開場動畫_日文字幕.mp4", "tool": "影片" }
+    { "name": "開場動畫日文版影片（原圖版，最新版）", "url": "docs/2026-11-19-opening-animation-ja.mp4", "tool": "影片", "kb": 3420 },
+    { "name": "旁白對照表（Word，可列印）", "url": "docs/opening-ja/opening-ja-narration-table.docx", "tool": "Word", "kb": 4196 },
+    { "name": "日文台詞（純文字）", "url": "docs/opening-ja/opening-ja-lines.txt", "tool": "文字", "kb": 2 },
+    { "name": "9 張原圖（壓縮檔）", "url": "docs/opening-ja/opening-ja-original-images.zip", "tool": "ZIP", "kb": 4184 }
   ],
   "todo": [
     "日文配音還沒有人聽過確認：請組員或老師聽一次，記下唸不好的段落",
