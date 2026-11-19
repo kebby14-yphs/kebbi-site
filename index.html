@@ -435,14 +435,17 @@ function followSim(c) {
     $f('fl-band').style.width = c.deadband * 100 + '%';
     let turn = 0, move = 0;
     if (Math.abs(st.x) > c.deadband) turn = clamp(-st.x * spd.turn * c.turn_gain, -spd.turn, spd.turn);
-    if (Math.abs(st.x) < c.forward_cx && st.w < dist.width) move = clamp((dist.width - st.w) / c.full_speed_gap * spd.move, c.min_move, spd.move);
+    if (Math.abs(st.x) < c.forward_cx && st.w < dist.width) {
+      move = clamp((dist.width - st.w) / c.full_speed_gap * spd.move, c.min_move, spd.move);
+      move *= 1 - (c.forward_discount || 0) * Math.abs(st.x) / c.forward_cx;   // 偏一邊時邊轉邊走，速度打折
+    }
     const side = Math.abs(st.x) <= c.deadband ? '正前方' : st.x < 0 ? '凱比的左手邊' : '凱比的右手邊';
     const far = st.w >= dist.width + 0.12 ? '很近' : st.w >= dist.width ? '剛好' : st.w >= dist.width - 0.12 ? '有點遠' : '很遠';
     const act = turn && move ? '邊轉邊往前走' : turn ? (turn > 0 ? '往左轉' : '往右轉') : move ? '往前走' : '停著';
     const why = move ? `人比設定的距離（寬 ${Math.round(dist.width * 100)}%）遠，往前追`
       : st.w >= dist.width ? '人已經夠近，不前進' : Math.abs(st.x) >= c.forward_cx ? '人太偏一邊，先轉過去再走' : '';
     // 機器人示意：箭頭方向＝轉向，長度＝前進速度
-    const ang = -turn / spd.turn * 60, len = 18 + (move / 0.2) * 22;
+    const ang = -turn / spd.turn * 60, len = 18 + (move / 0.3) * 22;
     $f('fl-out').innerHTML = `<div class="big">${act}</div>
       <div class="muted">你在${side}，距離${far}${why ? '｜' + why : ''}</div>
       <div>轉向 ${turn.toFixed(1)}　前進 ${move.toFixed(2)}</div>
